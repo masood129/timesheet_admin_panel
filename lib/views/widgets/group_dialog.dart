@@ -65,7 +65,7 @@ class _GroupDialogState extends State<GroupDialog> {
       }
 
       if (success) {
-        Get.back();
+        Navigator.of(context).pop();
       }
     }
   }
@@ -136,7 +136,7 @@ class _GroupDialogState extends State<GroupDialog> {
       ),
       actions: [
         TextButton(
-          onPressed: () => Get.back(),
+          onPressed: () => Navigator.of(context).pop(),
           child: const Text('انصراف'),
         ),
         ElevatedButton(

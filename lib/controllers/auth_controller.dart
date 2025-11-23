@@ -1,4 +1,5 @@
 import 'package:get/get.dart';
+import '../core/utils/snackbar_utils.dart';
 import 'package:get_storage/get_storage.dart';
 import '../../core/constants/app_constants.dart';
 import '../../data/services/api_service.dart';
@@ -42,11 +43,7 @@ class AuthController extends GetxController {
 
       // Check if user is admin
       if (response['Role'] != 'admin') {
-        Get.snackbar(
-          'خطا',
-          'شما دسترسی ادمین ندارید',
-          snackPosition: SnackPosition.TOP,
-        );
+        showCustomSnackbar('خطا', 'شما دسترسی ادمین ندارید', isError: true);
         await logout();
         return false;
       }
@@ -57,19 +54,12 @@ class AuthController extends GetxController {
       role.value = response['Role'];
       isLoggedIn.value = true;
 
-      Get.snackbar(
-        'موفق',
-        'خوش آمدید ${response['Username']}',
-        snackPosition: SnackPosition.TOP,
-      );
+      showCustomSnackbar('موفق', 'خوش آمدید ${response['Username']}');
 
       return true;
     } catch (e) {
-      Get.snackbar(
-        'خطا',
-        'ورود ناموفق بود: ${e.toString()}',
-        snackPosition: SnackPosition.TOP,
-      );
+      showCustomSnackbar('خطا', 'ورود ناموفق بود: ${e.toString()}',
+          isError: true);
       return false;
     } finally {
       isLoading.value = false;

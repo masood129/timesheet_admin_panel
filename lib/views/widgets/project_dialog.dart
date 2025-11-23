@@ -57,7 +57,7 @@ class _ProjectDialogState extends State<ProjectDialog> {
       }
 
       if (success) {
-        Get.back();
+        Navigator.of(context).pop();
       }
     }
   }
@@ -139,7 +139,7 @@ class _ProjectDialogState extends State<ProjectDialog> {
       ),
       actions: [
         TextButton(
-          onPressed: () => Get.back(),
+          onPressed: () => Navigator.of(context).pop(),
           child: const Text('انصراف'),
         ),
         ElevatedButton(

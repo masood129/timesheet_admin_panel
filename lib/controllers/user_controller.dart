@@ -1,4 +1,5 @@
 import 'package:get/get.dart';
+import '../core/utils/snackbar_utils.dart';
 import '../data/models/models.dart';
 import '../data/services/api_service.dart';
 
@@ -34,7 +35,8 @@ class UserController extends GetxController {
           (response['users'] as List).map((u) => User.fromJson(u)).toList();
       totalUsers.value = response['total'];
     } catch (e) {
-      Get.snackbar('خطا', 'دریافت کاربران ناموفق بود: ${e.toString()}');
+      showCustomSnackbar('خطا', 'دریافت کاربران ناموفق بود: ${e.toString()}',
+          isError: true);
     } finally {
       isLoading.value = false;
     }
@@ -45,7 +47,8 @@ class UserController extends GetxController {
       final response = await _apiService.getUserById(id);
       return User.fromJson(response);
     } catch (e) {
-      Get.snackbar('خطا', 'دریافت اطلاعات کاربر ناموفق بود');
+      showCustomSnackbar('خطا', 'دریافت اطلاعات کاربر ناموفق بود',
+          isError: true);
       return null;
     }
   }
@@ -61,11 +64,12 @@ class UserController extends GetxController {
         'Username': username,
         'Role': role,
       });
-      Get.snackbar('موفق', 'کاربر با موفقیت ایجاد شد');
+      showCustomSnackbar('موفق', 'کاربر با موفقیت ایجاد شد');
       await fetchUsers();
       return true;
     } catch (e) {
-      Get.snackbar('خطا', 'ایجاد کاربر ناموفق بود: ${e.toString()}');
+      showCustomSnackbar('خطا', 'ایجاد کاربر ناموفق بود: ${e.toString()}',
+          isError: true);
       return false;
     }
   }
@@ -73,11 +77,11 @@ class UserController extends GetxController {
   Future<bool> updateUser(int id, String username) async {
     try {
       await _apiService.updateUser(id, {'Username': username});
-      Get.snackbar('موفق', 'کاربر با موفقیت بروزرسانی شد');
+      showCustomSnackbar('موفق', 'کاربر با موفقیت بروزرسانی شد');
       await fetchUsers();
       return true;
     } catch (e) {
-      Get.snackbar('خطا', 'بروزرسانی کاربر ناموفق بود');
+      showCustomSnackbar('خطا', 'بروزرسانی کاربر ناموفق بود', isError: true);
       return false;
     }
   }
@@ -85,11 +89,11 @@ class UserController extends GetxController {
   Future<bool> deleteUser(int id) async {
     try {
       await _apiService.deleteUser(id);
-      Get.snackbar('موفق', 'کاربر با موفقیت حذف شد');
+      showCustomSnackbar('موفق', 'کاربر با موفقیت حذف شد');
       await fetchUsers();
       return true;
     } catch (e) {
-      Get.snackbar('خطا', 'حذف کاربر ناموفق بود');
+      showCustomSnackbar('خطا', 'حذف کاربر ناموفق بود', isError: true);
       return false;
     }
   }
@@ -97,11 +101,11 @@ class UserController extends GetxController {
   Future<bool> updateUserRole(int id, String role) async {
     try {
       await _apiService.updateUserRole(id, role);
-      Get.snackbar('موفق', 'نقش کاربر با موفقیت تغییر کرد');
+      showCustomSnackbar('موفق', 'نقش کاربر با موفقیت تغییر کرد');
       await fetchUsers();
       return true;
     } catch (e) {
-      Get.snackbar('خطا', 'تغییر نقش ناموفق بود');
+      showCustomSnackbar('خطا', 'تغییر نقش ناموفق بود', isError: true);
       return false;
     }
   }

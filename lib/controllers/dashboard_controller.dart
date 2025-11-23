@@ -1,4 +1,5 @@
 import 'package:get/get.dart';
+import '../core/utils/snackbar_utils.dart';
 import '../data/models/models.dart';
 import '../data/services/api_service.dart';
 
@@ -20,7 +21,8 @@ class DashboardController extends GetxController {
       final response = await _apiService.getSystemStatistics();
       statistics.value = SystemStatistics.fromJson(response);
     } catch (e) {
-      Get.snackbar('خطا', 'دریافت آمار ناموفق بود: ${e.toString()}');
+      showCustomSnackbar('خطا', 'دریافت آمار ناموفق بود: ${e.toString()}',
+          isError: true);
     } finally {
       isLoading.value = false;
     }

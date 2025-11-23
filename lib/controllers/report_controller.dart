@@ -1,4 +1,5 @@
 import 'package:get/get.dart';
+import '../core/utils/snackbar_utils.dart';
 import '../data/models/models.dart';
 import '../data/services/api_service.dart';
 
@@ -39,7 +40,8 @@ class ReportController extends GetxController {
           .toList();
       totalReports.value = response['total'];
     } catch (e) {
-      Get.snackbar('خطا', 'دریافت گزارش‌ها ناموفق بود: ${e.toString()}');
+      showCustomSnackbar('خطا', 'دریافت گزارش‌ها ناموفق بود: ${e.toString()}',
+          isError: true);
     } finally {
       isLoading.value = false;
     }
@@ -50,7 +52,8 @@ class ReportController extends GetxController {
       final response = await _apiService.getReportById(id);
       return MonthlyReport.fromJson(response);
     } catch (e) {
-      Get.snackbar('خطا', 'دریافت اطلاعات گزارش ناموفق بود');
+      showCustomSnackbar('خطا', 'دریافت اطلاعات گزارش ناموفق بود',
+          isError: true);
       return null;
     }
   }
@@ -58,11 +61,11 @@ class ReportController extends GetxController {
   Future<bool> updateReport(int id, Map<String, dynamic> data) async {
     try {
       await _apiService.updateReport(id, data);
-      Get.snackbar('موفق', 'گزارش با موفقیت بروزرسانی شد');
+      showCustomSnackbar('موفق', 'گزارش با موفقیت بروزرسانی شد');
       await fetchReports();
       return true;
     } catch (e) {
-      Get.snackbar('خطا', 'بروزرسانی گزارش ناموفق بود');
+      showCustomSnackbar('خطا', 'بروزرسانی گزارش ناموفق بود', isError: true);
       return false;
     }
   }
@@ -70,11 +73,11 @@ class ReportController extends GetxController {
   Future<bool> deleteReport(int id) async {
     try {
       await _apiService.deleteReport(id);
-      Get.snackbar('موفق', 'گزارش با موفقیت حذف شد');
+      showCustomSnackbar('موفق', 'گزارش با موفقیت حذف شد');
       await fetchReports();
       return true;
     } catch (e) {
-      Get.snackbar('خطا', 'حذف گزارش ناموفق بود');
+      showCustomSnackbar('خطا', 'حذف گزارش ناموفق بود', isError: true);
       return false;
     }
   }
@@ -85,11 +88,11 @@ class ReportController extends GetxController {
         'Status': status,
         if (comment != null && comment.isNotEmpty) 'Comment': comment,
       });
-      Get.snackbar('موفق', 'گزارش با موفقیت تایید شد');
+      showCustomSnackbar('موفق', 'گزارش با موفقیت تایید شد');
       await fetchReports();
       return true;
     } catch (e) {
-      Get.snackbar('خطا', 'تایید گزارش ناموفق بود');
+      showCustomSnackbar('خطا', 'تایید گزارش ناموفق بود', isError: true);
       return false;
     }
   }

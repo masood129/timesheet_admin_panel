@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'core/theme/app_theme.dart';
+import 'core/utils/snackbar_utils.dart';
 import 'data/services/api_service.dart';
 import 'views/pages/login_page.dart';
 import 'views/pages/main_layout.dart';
@@ -30,6 +31,7 @@ class MyApp extends StatelessWidget {
     final authController = Get.find<AuthController>();
 
     return GetMaterialApp(
+      scaffoldMessengerKey: snackbarKey,
       title: 'پنل ادمین تایم‌شیت',
       theme: AppTheme.lightTheme,
       darkTheme: AppTheme.darkTheme,

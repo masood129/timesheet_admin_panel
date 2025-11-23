@@ -1,4 +1,5 @@
 import 'package:get/get.dart';
+import '../core/utils/snackbar_utils.dart';
 import '../data/models/models.dart';
 import '../data/services/api_service.dart';
 
@@ -33,7 +34,8 @@ class ProjectController extends GetxController {
           .toList();
       totalProjects.value = response['total'];
     } catch (e) {
-      Get.snackbar('خطا', 'دریافت پروژه‌ها ناموفق بود: ${e.toString()}');
+      showCustomSnackbar('خطا', 'دریافت پروژه‌ها ناموفق بود: ${e.toString()}',
+          isError: true);
     } finally {
       isLoading.value = false;
     }
@@ -44,7 +46,8 @@ class ProjectController extends GetxController {
       final response = await _apiService.getProjectById(id);
       return Project.fromJson(response);
     } catch (e) {
-      Get.snackbar('خطا', 'دریافت اطلاعات پروژه ناموفق بود');
+      showCustomSnackbar('خطا', 'دریافت اطلاعات پروژه ناموفق بود',
+          isError: true);
       return null;
     }
   }
@@ -60,11 +63,12 @@ class ProjectController extends GetxController {
         'ProjectName': projectName,
         'securityLevel': securityLevel,
       });
-      Get.snackbar('موفق', 'پروژه با موفقیت ایجاد شد');
+      showCustomSnackbar('موفق', 'پروژه با موفقیت ایجاد شد');
       await fetchProjects();
       return true;
     } catch (e) {
-      Get.snackbar('خطا', 'ایجاد پروژه ناموفق بود: ${e.toString()}');
+      showCustomSnackbar('خطا', 'ایجاد پروژه ناموفق بود: ${e.toString()}',
+          isError: true);
       return false;
     }
   }
@@ -79,11 +83,11 @@ class ProjectController extends GetxController {
         'ProjectName': projectName,
         'securityLevel': securityLevel,
       });
-      Get.snackbar('موفق', 'پروژه با موفقیت بروزرسانی شد');
+      showCustomSnackbar('موفق', 'پروژه با موفقیت بروزرسانی شد');
       await fetchProjects();
       return true;
     } catch (e) {
-      Get.snackbar('خطا', 'بروزرسانی پروژه ناموفق بود');
+      showCustomSnackbar('خطا', 'بروزرسانی پروژه ناموفق بود', isError: true);
       return false;
     }
   }
@@ -91,11 +95,11 @@ class ProjectController extends GetxController {
   Future<bool> deleteProject(int id) async {
     try {
       await _apiService.deleteProject(id);
-      Get.snackbar('موفق', 'پروژه با موفقیت حذف شد');
+      showCustomSnackbar('موفق', 'پروژه با موفقیت حذف شد');
       await fetchProjects();
       return true;
     } catch (e) {
-      Get.snackbar('خطا', 'حذف پروژه ناموفق بود');
+      showCustomSnackbar('خطا', 'حذف پروژه ناموفق بود', isError: true);
       return false;
     }
   }
@@ -105,7 +109,8 @@ class ProjectController extends GetxController {
       final response = await _apiService.getProjectUsers(projectId);
       return response.map((u) => User.fromJson(u)).toList();
     } catch (e) {
-      Get.snackbar('خطا', 'دریافت کاربران پروژه ناموفق بود');
+      showCustomSnackbar('خطا', 'دریافت کاربران پروژه ناموفق بود',
+          isError: true);
       return [];
     }
   }
@@ -113,10 +118,10 @@ class ProjectController extends GetxController {
   Future<bool> addUserToProject(int projectId, int userId) async {
     try {
       await _apiService.addUserToProject(projectId, userId);
-      Get.snackbar('موفق', 'کاربر به پروژه اضافه شد');
+      showCustomSnackbar('موفق', 'کاربر به پروژه اضافه شد');
       return true;
     } catch (e) {
-      Get.snackbar('خطا', 'افزودن کاربر ناموفق بود');
+      showCustomSnackbar('خطا', 'افزودن کاربر ناموفق بود', isError: true);
       return false;
     }
   }
@@ -124,10 +129,10 @@ class ProjectController extends GetxController {
   Future<bool> removeUserFromProject(int projectId, int userId) async {
     try {
       await _apiService.removeUserFromProject(projectId, userId);
-      Get.snackbar('موفق', 'کاربر از پروژه حذف شد');
+      showCustomSnackbar('موفق', 'کاربر از پروژه حذف شد');
       return true;
     } catch (e) {
-      Get.snackbar('خطا', 'حذف کاربر ناموفق بود');
+      showCustomSnackbar('خطا', 'حذف کاربر ناموفق بود', isError: true);
       return false;
     }
   }

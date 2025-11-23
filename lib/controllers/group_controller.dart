@@ -1,4 +1,5 @@
 import 'package:get/get.dart';
+import '../core/utils/snackbar_utils.dart';
 import '../data/models/models.dart';
 import '../data/services/api_service.dart';
 
@@ -47,7 +48,8 @@ class GroupController extends GetxController {
           (response['groups'] as List).map((g) => Group.fromJson(g)).toList();
       totalGroups.value = response['total'];
     } catch (e) {
-      Get.snackbar('خطا', 'دریافت گروه‌ها ناموفق بود: ${e.toString()}');
+      showCustomSnackbar('خطا', 'دریافت گروه‌ها ناموفق بود: ${e.toString()}',
+          isError: true);
     } finally {
       isLoading.value = false;
     }
@@ -58,7 +60,8 @@ class GroupController extends GetxController {
       final response = await _apiService.getGroupById(id);
       return Group.fromJson(response);
     } catch (e) {
-      Get.snackbar('خطا', 'دریافت اطلاعات گروه ناموفق بود');
+      showCustomSnackbar('خطا', 'دریافت اطلاعات گروه ناموفق بود',
+          isError: true);
       return null;
     }
   }
@@ -72,11 +75,12 @@ class GroupController extends GetxController {
         'GroupName': groupName,
         'ManagerId': managerId,
       });
-      Get.snackbar('موفق', 'گروه با موفقیت ایجاد شد');
+      showCustomSnackbar('موفق', 'گروه با موفقیت ایجاد شد');
       await fetchGroups();
       return true;
     } catch (e) {
-      Get.snackbar('خطا', 'ایجاد گروه ناموفق بود: ${e.toString()}');
+      showCustomSnackbar('خطا', 'ایجاد گروه ناموفق بود: ${e.toString()}',
+          isError: true);
       return false;
     }
   }
@@ -89,11 +93,11 @@ class GroupController extends GetxController {
       await _apiService.updateGroup(id, {
         'GroupName': groupName,
       });
-      Get.snackbar('موفق', 'گروه با موفقیت بروزرسانی شد');
+      showCustomSnackbar('موفق', 'گروه با موفقیت بروزرسانی شد');
       await fetchGroups();
       return true;
     } catch (e) {
-      Get.snackbar('خطا', 'بروزرسانی گروه ناموفق بود');
+      showCustomSnackbar('خطا', 'بروزرسانی گروه ناموفق بود', isError: true);
       return false;
     }
   }
@@ -101,11 +105,11 @@ class GroupController extends GetxController {
   Future<bool> deleteGroup(int id) async {
     try {
       await _apiService.deleteGroup(id);
-      Get.snackbar('موفق', 'گروه با موفقیت حذف شد');
+      showCustomSnackbar('موفق', 'گروه با موفقیت حذف شد');
       await fetchGroups();
       return true;
     } catch (e) {
-      Get.snackbar('خطا', 'حذف گروه ناموفق بود');
+      showCustomSnackbar('خطا', 'حذف گروه ناموفق بود', isError: true);
       return false;
     }
   }
@@ -113,11 +117,11 @@ class GroupController extends GetxController {
   Future<bool> setGroupManager(int groupId, int managerId) async {
     try {
       await _apiService.setGroupManager(groupId, managerId);
-      Get.snackbar('موفق', 'مدیر گروه تعیین شد');
+      showCustomSnackbar('موفق', 'مدیر گروه تعیین شد');
       await fetchGroups();
       return true;
     } catch (e) {
-      Get.snackbar('خطا', 'تعیین مدیر ناموفق بود');
+      showCustomSnackbar('خطا', 'تعیین مدیر ناموفق بود', isError: true);
       return false;
     }
   }
@@ -125,10 +129,10 @@ class GroupController extends GetxController {
   Future<bool> addUserToGroup(int groupId, int userId) async {
     try {
       await _apiService.addUserToGroup(groupId, userId);
-      Get.snackbar('موفق', 'کاربر به گروه اضافه شد');
+      showCustomSnackbar('موفق', 'کاربر به گروه اضافه شد');
       return true;
     } catch (e) {
-      Get.snackbar('خطا', 'افزودن کاربر ناموفق بود');
+      showCustomSnackbar('خطا', 'افزودن کاربر ناموفق بود', isError: true);
       return false;
     }
   }
@@ -136,10 +140,10 @@ class GroupController extends GetxController {
   Future<bool> removeUserFromGroup(int groupId, int userId) async {
     try {
       await _apiService.removeUserFromGroup(groupId, userId);
-      Get.snackbar('موفق', 'کاربر از گروه حذف شد');
+      showCustomSnackbar('موفق', 'کاربر از گروه حذف شد');
       return true;
     } catch (e) {
-      Get.snackbar('خطا', 'حذف کاربر ناموفق بود');
+      showCustomSnackbar('خطا', 'حذف کاربر ناموفق بود', isError: true);
       return false;
     }
   }

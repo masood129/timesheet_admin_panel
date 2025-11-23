@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import '../../core/utils/snackbar_utils.dart';
 import '../../controllers/report_controller.dart';
 import '../../data/models/models.dart';
 
@@ -24,7 +25,7 @@ class _ReportDialogState extends State<ReportDialog> {
 
   Future<void> _handleApprove() async {
     if (_selectedAction == null) {
-      Get.snackbar('خطا', 'لطفا یک عملیات انتخاب کنید');
+      showCustomSnackbar('خطا', 'لطفا یک عملیات انتخاب کنید', isError: true);
       return;
     }
 
@@ -36,7 +37,7 @@ class _ReportDialogState extends State<ReportDialog> {
     );
 
     if (success) {
-      Get.back();
+      Navigator.of(context).pop();
     }
   }
 
@@ -137,7 +138,7 @@ class _ReportDialogState extends State<ReportDialog> {
       ),
       actions: [
         TextButton(
-          onPressed: () => Get.back(),
+          onPressed: () => Navigator.of(context).pop(),
           child: const Text('بستن'),
         ),
         ElevatedButton(
