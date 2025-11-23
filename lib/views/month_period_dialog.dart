@@ -249,8 +249,8 @@ class _MonthPeriodDialogState extends State<MonthPeriodDialog> {
   void _save() async {
     bool success;
 
-    if (widget.period != null) {
-      // Edit mode
+    if (widget.period != null && (widget.period!.isCustom == true)) {
+      // Edit mode - only if it's already a custom period
       success = await widget.controller.updateMonthPeriod(
         year: year,
         month: month,
@@ -260,7 +260,7 @@ class _MonthPeriodDialogState extends State<MonthPeriodDialog> {
         endMonth: endMonth,
       );
     } else {
-      // Create mode
+      // Create mode - for new periods or editing default periods
       success = await widget.controller.createMonthPeriod(
         year: year,
         month: month,
