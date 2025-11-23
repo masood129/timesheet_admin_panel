@@ -3,9 +3,15 @@ import 'package:get/get.dart';
 import '../../controllers/auth_controller.dart';
 import '../../controllers/dashboard_controller.dart';
 import '../../controllers/user_controller.dart';
+import '../../controllers/project_controller.dart';
+import '../../controllers/group_controller.dart';
+import '../../controllers/report_controller.dart';
 import '../widgets/sidebar.dart';
 import 'dashboard_page.dart';
 import 'users_page.dart';
+import 'projects_page.dart';
+import 'groups_page.dart';
+import 'reports_page.dart';
 
 class MainLayout extends StatefulWidget {
   const MainLayout({super.key});
@@ -23,15 +29,18 @@ class _MainLayoutState extends State<MainLayout> {
     // Initialize controllers
     Get.lazyPut(() => DashboardController());
     Get.lazyPut(() => UserController());
+    Get.lazyPut(() => ProjectController());
+    Get.lazyPut(() => GroupController());
+    Get.lazyPut(() => ReportController());
   }
 
   List<Widget> _getPages() {
     return [
       const DashboardPage(),
       const UsersPage(),
-      const Center(child: Text('پروژه‌ها')),
-      const Center(child: Text('گروه‌ها')),
-      const Center(child: Text('گزارش‌ها')),
+      const ProjectsPage(),
+      const GroupsPage(),
+      const ReportsPage(),
       const Center(child: Text('تنظیمات')),
     ];
   }

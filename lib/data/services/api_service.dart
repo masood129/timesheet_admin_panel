@@ -14,7 +14,7 @@ class ApiService {
 
   void init() {
     _dio = Dio(BaseOptions(
-      baseURL: AppConstants.baseUrl,
+      baseUrl: AppConstants.baseUrl,
       connectTimeout: AppConstants.connectTimeout,
       receiveTimeout: AppConstants.receiveTimeout,
       headers: {
@@ -343,6 +343,47 @@ class ApiService {
         },
       );
       return response.data;
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  Future<Map<String, dynamic>> getReportById(int id) async {
+    try {
+      final response = await _dio.get(
+        '${AppConstants.adminReportsEndpoint}/$id',
+      );
+      return response.data;
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  Future<void> updateReport(int id, Map<String, dynamic> data) async {
+    try {
+      await _dio.put(
+        '${AppConstants.adminReportsEndpoint}/$id',
+        data: data,
+      );
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  Future<void> deleteReport(int id) async {
+    try {
+      await _dio.delete('${AppConstants.adminReportsEndpoint}/$id');
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  Future<void> approveReport(int id, Map<String, dynamic> data) async {
+    try {
+      await _dio.post(
+        '${AppConstants.adminReportsEndpoint}/$id/approve',
+        data: data,
+      );
     } catch (e) {
       rethrow;
     }
