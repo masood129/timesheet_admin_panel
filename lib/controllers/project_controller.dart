@@ -50,11 +50,13 @@ class ProjectController extends GetxController {
   }
 
   Future<bool> createProject({
+    required int id,
     required String projectName,
     required int securityLevel,
   }) async {
     try {
       await _apiService.createProject({
+        'Id': id,
         'ProjectName': projectName,
         'securityLevel': securityLevel,
       });

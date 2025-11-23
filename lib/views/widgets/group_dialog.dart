@@ -14,11 +14,13 @@ class GroupDialog extends StatefulWidget {
 
 class _GroupDialogState extends State<GroupDialog> {
   final _formKey = GlobalKey<FormState>();
+  late TextEditingController _groupIdController;
   late TextEditingController _groupNameController;
 
   @override
   void initState() {
     super.initState();
+    _groupIdController = TextEditingController();
     _groupNameController = TextEditingController(
       text: widget.group?.groupName ?? '',
     );
@@ -26,6 +28,7 @@ class _GroupDialogState extends State<GroupDialog> {
 
   @override
   void dispose() {
+    _groupIdController.dispose();
     _groupNameController.dispose();
     super.dispose();
   }
@@ -38,6 +41,7 @@ class _GroupDialogState extends State<GroupDialog> {
       if (widget.group == null) {
         // Create new group
         success = await controller.createGroup(
+          groupId: int.parse(_groupIdController.text),
           groupName: _groupNameController.text,
         );
       } else {
@@ -67,6 +71,28 @@ class _GroupDialogState extends State<GroupDialog> {
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
+              // Group ID (only for new groups)
+              if (!isEdit)
+                TextFormField(
+                  controller: _groupIdController,
+                  decoration: const InputDecoration(
+                    labelText: 'شناسه گروه',
+                    prefixIcon: Icon(Icons.tag),
+                  ),
+                  keyboardType: TextInputType.number,
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'شناسه گروه الزامی است';
+                    }
+                    if (int.tryParse(value) == null) {
+                      return 'شناسه باید عدد باشد';
+                    }
+                    return null;
+                  },
+                ),
+
+              if (!isEdit) const SizedBox(height: 16),
+
               // Group Name
               TextFormField(
                 controller: _groupNameController,

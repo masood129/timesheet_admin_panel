@@ -14,12 +14,14 @@ class ProjectDialog extends StatefulWidget {
 
 class _ProjectDialogState extends State<ProjectDialog> {
   final _formKey = GlobalKey<FormState>();
+  late TextEditingController _projectIdController;
   late TextEditingController _projectNameController;
   int _securityLevel = 1;
 
   @override
   void initState() {
     super.initState();
+    _projectIdController = TextEditingController();
     _projectNameController = TextEditingController(
       text: widget.project?.projectName ?? '',
     );
@@ -28,6 +30,7 @@ class _ProjectDialogState extends State<ProjectDialog> {
 
   @override
   void dispose() {
+    _projectIdController.dispose();
     _projectNameController.dispose();
     super.dispose();
   }
@@ -40,6 +43,7 @@ class _ProjectDialogState extends State<ProjectDialog> {
       if (widget.project == null) {
         // Create new project
         success = await controller.createProject(
+          id: int.parse(_projectIdController.text),
           projectName: _projectNameController.text,
           securityLevel: _securityLevel,
         );
@@ -71,6 +75,28 @@ class _ProjectDialogState extends State<ProjectDialog> {
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
+              // Project ID (only for new projects)
+              if (!isEdit)
+                TextFormField(
+                  controller: _projectIdController,
+                  decoration: const InputDecoration(
+                    labelText: 'شناسه پروژه',
+                    prefixIcon: Icon(Icons.tag),
+                  ),
+                  keyboardType: TextInputType.number,
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'شناسه پروژه الزامی است';
+                    }
+                    if (int.tryParse(value) == null) {
+                      return 'شناسه باید عدد باشد';
+                    }
+                    return null;
+                  },
+                ),
+
+              if (!isEdit) const SizedBox(height: 16),
+
               // Project Name
               TextFormField(
                 controller: _projectNameController,

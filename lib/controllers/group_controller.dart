@@ -49,11 +49,13 @@ class GroupController extends GetxController {
   }
 
   Future<bool> createGroup({
+    required int groupId,
     required String groupName,
     int? managerId,
   }) async {
     try {
       await _apiService.createGroup({
+        'GroupId': groupId,
         'GroupName': groupName,
         if (managerId != null) 'ManagerId': managerId,
       });
