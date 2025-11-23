@@ -14,21 +14,22 @@ class GroupDialog extends StatefulWidget {
 
 class _GroupDialogState extends State<GroupDialog> {
   final _formKey = GlobalKey<FormState>();
-  late TextEditingController _groupIdController;
   late TextEditingController _groupNameController;
+  int? _selectedManagerId;
 
   @override
   void initState() {
     super.initState();
-    _groupIdController = TextEditingController();
     _groupNameController = TextEditingController(
       text: widget.group?.groupName ?? '',
     );
+    if (widget.group != null) {
+      _selectedManagerId = widget.group!.managerId;
+    }
   }
 
   @override
   void dispose() {
-    _groupIdController.dispose();
     _groupNameController.dispose();
     super.dispose();
   }
@@ -41,8 +42,8 @@ class _GroupDialogState extends State<GroupDialog> {
       if (widget.group == null) {
         // Create new group
         success = await controller.createGroup(
-          groupId: int.parse(_groupIdController.text),
           groupName: _groupNameController.text,
+          managerId: _selectedManagerId!,
         );
       } else {
         // Update existing group
@@ -50,6 +51,17 @@ class _GroupDialogState extends State<GroupDialog> {
           widget.group!.groupId,
           _groupNameController.text,
         );
+        // Note: Update group manager is a separate API call in the current controller structure
+        // If we want to update manager here, we need to call setGroupManager too.
+        // For now, let's stick to the existing updateGroup logic which only updates name,
+        // or check if updateGroup supports managerId.
+        // The controller's updateGroup only takes groupName.
+        // The backend updateGroup takes ManagerId.
+        // Let's update the controller's updateGroup later if needed, but for now focus on CREATE.
+        if (success && _selectedManagerId != widget.group!.managerId) {
+          await controller.setGroupManager(
+              widget.group!.groupId, _selectedManagerId!);
+        }
       }
 
       if (success) {
@@ -61,6 +73,7 @@ class _GroupDialogState extends State<GroupDialog> {
   @override
   Widget build(BuildContext context) {
     final isEdit = widget.group != null;
+    final controller = Get.find<GroupController>();
 
     return AlertDialog(
       title: Text(isEdit ? 'ویرایش گروه' : 'گروه جدید'),
@@ -71,28 +84,6 @@ class _GroupDialogState extends State<GroupDialog> {
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              // Group ID (only for new groups)
-              if (!isEdit)
-                TextFormField(
-                  controller: _groupIdController,
-                  decoration: const InputDecoration(
-                    labelText: 'شناسه گروه',
-                    prefixIcon: Icon(Icons.tag),
-                  ),
-                  keyboardType: TextInputType.number,
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'شناسه گروه الزامی است';
-                    }
-                    if (int.tryParse(value) == null) {
-                      return 'شناسه باید عدد باشد';
-                    }
-                    return null;
-                  },
-                ),
-
-              if (!isEdit) const SizedBox(height: 16),
-
               // Group Name
               TextFormField(
                 controller: _groupNameController,
@@ -107,16 +98,38 @@ class _GroupDialogState extends State<GroupDialog> {
                   return null;
                 },
               ),
+              const SizedBox(height: 16),
 
-              if (isEdit && widget.group!.managerName != null) ...[
-                const SizedBox(height: 16),
-                ListTile(
-                  leading: const Icon(Icons.person),
-                  title: const Text('مدیر گروه'),
-                  subtitle: Text(widget.group!.managerName!),
-                  contentPadding: EdgeInsets.zero,
-                ),
-              ],
+              // Manager Dropdown
+              Obx(() {
+                if (controller.potentialManagers.isEmpty) {
+                  return const Center(child: CircularProgressIndicator());
+                }
+                return DropdownButtonFormField<int>(
+                  value: _selectedManagerId,
+                  decoration: const InputDecoration(
+                    labelText: 'مدیر گروه',
+                    prefixIcon: Icon(Icons.person),
+                  ),
+                  items: controller.potentialManagers.map((user) {
+                    return DropdownMenuItem<int>(
+                      value: user.userId,
+                      child: Text('${user.username} (${user.userId})'),
+                    );
+                  }).toList(),
+                  onChanged: (value) {
+                    setState(() {
+                      _selectedManagerId = value;
+                    });
+                  },
+                  validator: (value) {
+                    if (value == null) {
+                      return 'انتخاب مدیر گروه الزامی است';
+                    }
+                    return null;
+                  },
+                );
+              }),
             ],
           ),
         ),

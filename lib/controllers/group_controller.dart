@@ -11,10 +11,25 @@ class GroupController extends GetxController {
   final currentPage = 1.obs;
   final searchQuery = ''.obs;
 
+  final potentialManagers = <User>[].obs;
+
   @override
   void onInit() {
     super.onInit();
     fetchGroups();
+    fetchPotentialManagers();
+  }
+
+  Future<void> fetchPotentialManagers() async {
+    try {
+      // Fetch all users to be selected as managers
+      // You might want to filter by role 'group_manager' if applicable
+      final response = await _apiService.getUsers(limit: 1000);
+      potentialManagers.value =
+          (response['users'] as List).map((u) => User.fromJson(u)).toList();
+    } catch (e) {
+      print('Error fetching managers: $e');
+    }
   }
 
   Future<void> fetchGroups({int page = 1}) async {
@@ -49,15 +64,13 @@ class GroupController extends GetxController {
   }
 
   Future<bool> createGroup({
-    required int groupId,
     required String groupName,
-    int? managerId,
+    required int managerId,
   }) async {
     try {
       await _apiService.createGroup({
-        'GroupId': groupId,
         'GroupName': groupName,
-        if (managerId != null) 'ManagerId': managerId,
+        'ManagerId': managerId,
       });
       Get.snackbar('موفق', 'گروه با موفقیت ایجاد شد');
       await fetchGroups();
