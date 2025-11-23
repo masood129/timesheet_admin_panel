@@ -5,6 +5,7 @@ class AppConstants {
 
   // Endpoints
   static const String loginEndpoint = '/auth/login';
+  static const String adminEndpoint = '/admin';
   static const String adminUsersEndpoint = '/admin/users';
   static const String adminProjectsEndpoint = '/admin/projects';
   static const String adminGroupsEndpoint = '/admin/groups';

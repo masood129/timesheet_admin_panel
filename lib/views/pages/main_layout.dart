@@ -6,12 +6,14 @@ import '../../controllers/user_controller.dart';
 import '../../controllers/project_controller.dart';
 import '../../controllers/group_controller.dart';
 import '../../controllers/report_controller.dart';
+import '../../controllers/month_period_controller.dart';
 import '../widgets/sidebar.dart';
 import 'dashboard_page.dart';
 import 'users_page.dart';
 import 'projects_page.dart';
 import 'groups_page.dart';
 import 'reports_page.dart';
+import '../month_periods_page.dart';
 
 class MainLayout extends StatefulWidget {
   const MainLayout({super.key});
@@ -32,6 +34,7 @@ class _MainLayoutState extends State<MainLayout> {
     Get.lazyPut(() => ProjectController());
     Get.lazyPut(() => GroupController());
     Get.lazyPut(() => ReportController());
+    Get.lazyPut(() => MonthPeriodController());
   }
 
   List<Widget> _getPages() {
@@ -41,6 +44,7 @@ class _MainLayoutState extends State<MainLayout> {
       const ProjectsPage(),
       const GroupsPage(),
       const ReportsPage(),
+      const MonthPeriodsPage(),
       const Center(child: Text('تنظیمات')),
     ];
   }
@@ -166,6 +170,8 @@ class _MainLayoutState extends State<MainLayout> {
       case 4:
         return 'گزارش‌ها';
       case 5:
+        return 'مدیریت بازه ماه‌ها';
+      case 6:
         return 'تنظیمات';
       default:
         return '';

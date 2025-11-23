@@ -442,4 +442,65 @@ class ApiService {
       rethrow;
     }
   }
+
+  // Month Period Settings
+  Future<List<dynamic>> getYearMonthPeriods(int year) async {
+    try {
+      final response = await _dio.get(
+        '${AppConstants.adminEndpoint}/month-periods/$year',
+      );
+      return response.data;
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  Future<Map<String, dynamic>> getMonthPeriod(int year, int month) async {
+    try {
+      final response = await _dio.get(
+        '${AppConstants.adminEndpoint}/month-periods/$year/$month',
+      );
+      return response.data;
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  Future<Map<String, dynamic>> createMonthPeriod(
+      Map<String, dynamic> data) async {
+    try {
+      final response = await _dio.post(
+        '${AppConstants.adminEndpoint}/month-periods',
+        data: data,
+      );
+      return response.data;
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  Future<Map<String, dynamic>> updateMonthPeriod(
+      int year, int month, Map<String, dynamic> data) async {
+    try {
+      final response = await _dio.put(
+        '${AppConstants.adminEndpoint}/month-periods/$year/$month',
+        data: data,
+      );
+      return response.data;
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  Future<void> deleteMonthPeriod(
+      int year, int month, Map<String, dynamic> data) async {
+    try {
+      await _dio.delete(
+        '${AppConstants.adminEndpoint}/month-periods/$year/$month',
+        data: data,
+      );
+    } catch (e) {
+      rethrow;
+    }
+  }
 }
