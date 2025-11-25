@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'core/theme/app_theme.dart';
@@ -10,6 +11,9 @@ import 'controllers/auth_controller.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+
+  // Initialize dotenv
+  await dotenv.load(fileName: ".env");
 
   // Initialize GetStorage
   await GetStorage.init();
