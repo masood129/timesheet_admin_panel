@@ -93,13 +93,6 @@ class ProjectsPage extends StatelessWidget {
                             ),
                           ),
                           const Expanded(
-                            flex: 2,
-                            child: Text(
-                              'سطح امنیتی',
-                              style: TextStyle(fontWeight: FontWeight.bold),
-                            ),
-                          ),
-                          const Expanded(
                             flex: 1,
                             child: Text(
                               'عملیات',
@@ -133,11 +126,6 @@ class ProjectsPage extends StatelessWidget {
                                 Expanded(
                                   flex: 3,
                                   child: Text(project.projectName),
-                                ),
-                                Expanded(
-                                  flex: 2,
-                                  child: _buildSecurityBadge(
-                                      project.securityLevel),
                                 ),
                                 Expanded(
                                   flex: 1,
@@ -226,46 +214,6 @@ class ProjectsPage extends StatelessWidget {
             }),
           ),
         ],
-      ),
-    );
-  }
-
-  Widget _buildSecurityBadge(int level) {
-    Color color;
-    String label;
-
-    switch (level) {
-      case 1:
-        color = Colors.green;
-        label = 'سطح 1';
-        break;
-      case 2:
-        color = Colors.orange;
-        label = 'سطح 2';
-        break;
-      case 3:
-        color = Colors.red;
-        label = 'سطح 3';
-        break;
-      default:
-        color = Colors.grey;
-        label = 'سطح $level';
-    }
-
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
-      decoration: BoxDecoration(
-        color: color.withOpacity(0.1),
-        borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: color),
-      ),
-      child: Text(
-        label,
-        style: TextStyle(
-          color: color,
-          fontSize: 12,
-          fontWeight: FontWeight.w500,
-        ),
       ),
     );
   }

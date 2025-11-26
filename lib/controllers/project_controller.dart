@@ -55,13 +55,11 @@ class ProjectController extends GetxController {
   Future<bool> createProject({
     required int id,
     required String projectName,
-    required int securityLevel,
   }) async {
     try {
       await _apiService.createProject({
-        'Id': id,
-        'ProjectName': projectName,
-        'securityLevel': securityLevel,
+        'id': id,
+        'projectName': projectName,
       });
       showCustomSnackbar('موفق', 'پروژه با موفقیت ایجاد شد');
       await fetchProjects();
@@ -76,12 +74,10 @@ class ProjectController extends GetxController {
   Future<bool> updateProject(
     int id,
     String projectName,
-    int securityLevel,
   ) async {
     try {
       await _apiService.updateProject(id, {
-        'ProjectName': projectName,
-        'securityLevel': securityLevel,
+        'projectName': projectName,
       });
       showCustomSnackbar('موفق', 'پروژه با موفقیت بروزرسانی شد');
       await fetchProjects();

@@ -1,9 +1,15 @@
 class User {
   final int userId;
   final String username;
+  final String? farsifirstname;
+  final String? farsilastname;
+  final String? email;
   final String role;
   final int? groupId;
   final String? groupName;
+  final bool isActive;
+  final String? directAdmin;
+  final int? directAdminid;
   final String? contractArrivalTime;
   final String? contractLeaveTime;
   final int? minMonthlyHours;
@@ -12,9 +18,15 @@ class User {
   User({
     required this.userId,
     required this.username,
+    this.farsifirstname,
+    this.farsilastname,
+    this.email,
     required this.role,
     this.groupId,
     this.groupName,
+    this.isActive = true,
+    this.directAdmin,
+    this.directAdminid,
     this.contractArrivalTime,
     this.contractLeaveTime,
     this.minMonthlyHours,
@@ -23,14 +35,20 @@ class User {
 
   factory User.fromJson(Map<String, dynamic> json) {
     return User(
-      userId: json['UserId'] ?? json['userId'],
-      username: json['Username'] ?? json['username'],
-      role: json['Role'] ?? json['role'],
-      groupId: json['GroupId'],
-      groupName: json['GroupName'],
-      contractArrivalTime: json['ContractArrivalTime'],
-      contractLeaveTime: json['ContractLeaveTime'],
-      minMonthlyHours: json['MinMonthlyHours'],
+      userId: json['personalid'] as int? ?? 0,
+      username: (json['username'] ?? json['id']) as String? ?? '',
+      farsifirstname: json['farsifirstname'] as String?,
+      farsilastname: json['farsilastname'] as String?,
+      email: json['email'] as String?,
+      role: json['role'] as String? ?? 'user',
+      groupId: json['groupid'] as int?,
+      groupName: json['groupname'] as String?,
+      isActive: json['IsActive'] as bool? ?? true,
+      directAdmin: json['directAdmin'] as String?,
+      directAdminid: json['directAdminid'] as int?,
+      contractArrivalTime: json['ContractArrivalTime'] as String?,
+      contractLeaveTime: json['ContractLeaveTime'] as String?,
+      minMonthlyHours: json['MinMonthlyHours'] as int?,
       projects: json['Projects'] != null
           ? (json['Projects'] as List).map((p) => Project.fromJson(p)).toList()
           : null,
@@ -39,11 +57,22 @@ class User {
 
   Map<String, dynamic> toJson() {
     return {
-      'UserId': userId,
-      'Username': username,
-      'Role': role,
-      'GroupId': groupId,
+      'personalid': userId,
+      'id': username,
+      'farsifirstname': farsifirstname,
+      'farsilastname': farsilastname,
+      'email': email,
+      'role': role,
+      'groupid': groupId,
+      'IsActive': isActive,
     };
+  }
+
+  String get fullName {
+    if (farsifirstname != null && farsilastname != null) {
+      return '$farsifirstname $farsilastname';
+    }
+    return username;
   }
 
   String get roleDisplay {
@@ -67,21 +96,18 @@ class User {
 class Project {
   final int id;
   final String projectName;
-  final int securityLevel;
   final List<User>? users;
 
   Project({
     required this.id,
     required this.projectName,
-    required this.securityLevel,
     this.users,
   });
 
   factory Project.fromJson(Map<String, dynamic> json) {
     return Project(
-      id: json['Id'] ?? json['id'],
-      projectName: json['ProjectName'] ?? json['projectName'],
-      securityLevel: json['securityLevel'] ?? 1,
+      id: json['id'] as int? ?? 0,
+      projectName: json['projectName'] as String? ?? '',
       users: json['Users'] != null
           ? (json['Users'] as List).map((u) => User.fromJson(u)).toList()
           : null,
@@ -90,9 +116,8 @@ class Project {
 
   Map<String, dynamic> toJson() {
     return {
-      'Id': id,
-      'ProjectName': projectName,
-      'securityLevel': securityLevel,
+      'id': id,
+      'projectName': projectName,
     };
   }
 }
@@ -102,6 +127,7 @@ class Group {
   final String groupName;
   final int? managerId;
   final String? managerName;
+  final String? managerUsername;
   final List<User>? members;
 
   Group({
@@ -109,15 +135,17 @@ class Group {
     required this.groupName,
     this.managerId,
     this.managerName,
+    this.managerUsername,
     this.members,
   });
 
   factory Group.fromJson(Map<String, dynamic> json) {
     return Group(
-      groupId: json['GroupId'] ?? json['groupId'],
-      groupName: json['GroupName'] ?? json['groupName'],
-      managerId: json['ManagerId'],
-      managerName: json['ManagerName'],
+      groupId: json['id'] as int? ?? 0,
+      groupName: json['groupname'] as String? ?? '',
+      managerId: json['managerID'] as int?,
+      managerName: json['managerName'] as String?,
+      managerUsername: json['managerUsername'] as String?,
       members: json['Members'] != null
           ? (json['Members'] as List).map((m) => User.fromJson(m)).toList()
           : null,
@@ -126,9 +154,9 @@ class Group {
 
   Map<String, dynamic> toJson() {
     return {
-      'GroupId': groupId,
-      'GroupName': groupName,
-      'ManagerId': managerId,
+      'id': groupId,
+      'groupname': groupName,
+      'managerID': managerId,
     };
   }
 }
@@ -137,6 +165,8 @@ class MonthlyReport {
   final int reportId;
   final int userId;
   final String? username;
+  final String? farsifirstname;
+  final String? farsilastname;
   final int year;
   final int month;
   final int jalaliYear;
@@ -155,6 +185,8 @@ class MonthlyReport {
     required this.reportId,
     required this.userId,
     this.username,
+    this.farsifirstname,
+    this.farsilastname,
     required this.year,
     required this.month,
     required this.jalaliYear,
@@ -172,20 +204,22 @@ class MonthlyReport {
 
   factory MonthlyReport.fromJson(Map<String, dynamic> json) {
     return MonthlyReport(
-      reportId: json['ReportId'],
-      userId: json['UserId'],
-      username: json['Username'],
-      year: json['Year'],
-      month: json['Month'],
-      jalaliYear: json['JalaliYear'],
-      jalaliMonth: json['JalaliMonth'],
-      totalHours: json['TotalHours'],
-      gymCost: json['GymCost'],
-      status: json['Status'],
-      groupId: json['GroupId'],
-      generalManagerStatus: json['GeneralManagerStatus'],
-      managerComment: json['ManagerComment'],
-      financeComment: json['FinanceComment'],
+      reportId: json['ReportId'] as int,
+      userId: json['UserId'] as int,
+      username: json['username'] as String?,
+      farsifirstname: json['farsifirstname'] as String?,
+      farsilastname: json['farsilastname'] as String?,
+      year: json['Year'] as int,
+      month: json['Month'] as int,
+      jalaliYear: json['JalaliYear'] as int,
+      jalaliMonth: json['JalaliMonth'] as int,
+      totalHours: json['TotalHours'] as int,
+      gymCost: json['GymCost'] as int,
+      status: json['Status'] as String,
+      groupId: json['GroupId'] as int?,
+      generalManagerStatus: json['GeneralManagerStatus'] as String?,
+      managerComment: json['ManagerComment'] as String?,
+      financeComment: json['FinanceComment'] as String?,
       submittedAt: json['SubmittedAt'] != null
           ? DateTime.parse(json['SubmittedAt'])
           : null,
@@ -193,6 +227,13 @@ class MonthlyReport {
           ? DateTime.parse(json['ApprovedAt'])
           : null,
     );
+  }
+
+  String get userFullName {
+    if (farsifirstname != null && farsilastname != null) {
+      return '$farsifirstname $farsilastname';
+    }
+    return username ?? 'نامشخص';
   }
 
   String get statusDisplay {

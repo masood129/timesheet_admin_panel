@@ -16,7 +16,6 @@ class _ProjectDialogState extends State<ProjectDialog> {
   final _formKey = GlobalKey<FormState>();
   late TextEditingController _projectIdController;
   late TextEditingController _projectNameController;
-  int _securityLevel = 1;
 
   @override
   void initState() {
@@ -25,7 +24,6 @@ class _ProjectDialogState extends State<ProjectDialog> {
     _projectNameController = TextEditingController(
       text: widget.project?.projectName ?? '',
     );
-    _securityLevel = widget.project?.securityLevel ?? 1;
   }
 
   @override
@@ -45,14 +43,12 @@ class _ProjectDialogState extends State<ProjectDialog> {
         success = await controller.createProject(
           id: int.parse(_projectIdController.text),
           projectName: _projectNameController.text,
-          securityLevel: _securityLevel,
         );
       } else {
         // Update existing project
         success = await controller.updateProject(
           widget.project!.id,
           _projectNameController.text,
-          _securityLevel,
         );
       }
 
@@ -113,26 +109,6 @@ class _ProjectDialogState extends State<ProjectDialog> {
               ),
 
               const SizedBox(height: 16),
-
-              // Security Level
-              DropdownButtonFormField<int>(
-                value: _securityLevel,
-                decoration: const InputDecoration(
-                  labelText: 'سطح امنیتی',
-                  prefixIcon: Icon(Icons.security),
-                ),
-                items: const [
-                  DropdownMenuItem(value: 1, child: Text('سطح 1 - عمومی')),
-                  DropdownMenuItem(value: 2, child: Text('سطح 2 - محرمانه')),
-                  DropdownMenuItem(
-                      value: 3, child: Text('سطح 3 - بسیار محرمانه')),
-                ],
-                onChanged: (value) {
-                  setState(() {
-                    _securityLevel = value!;
-                  });
-                },
-              ),
             ],
           ),
         ),
