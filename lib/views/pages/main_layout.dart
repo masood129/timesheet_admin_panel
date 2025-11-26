@@ -12,6 +12,13 @@ import 'groups_page.dart';
 import 'reports_page.dart';
 import '../month_periods_page.dart';
 import 'logs_page.dart';
+import '../../controllers/dashboard_controller.dart';
+import '../../controllers/user_controller.dart';
+import '../../controllers/project_controller.dart';
+import '../../controllers/group_controller.dart';
+import '../../controllers/report_controller.dart';
+import '../../controllers/month_period_controller.dart';
+import '../../controllers/logs_controller.dart';
 
 class MainLayout extends StatefulWidget {
   const MainLayout({super.key});
@@ -33,6 +40,29 @@ class _MainLayoutState extends State<MainLayout> {
         baseUrl: apiService.baseUrl,
         token: apiService.token ?? '',
       ));
+    }
+
+    // Initialize Controllers
+    if (!Get.isRegistered<DashboardController>()) {
+      Get.put(DashboardController());
+    }
+    if (!Get.isRegistered<UserController>()) {
+      Get.put(UserController());
+    }
+    if (!Get.isRegistered<ProjectController>()) {
+      Get.put(ProjectController());
+    }
+    if (!Get.isRegistered<GroupController>()) {
+      Get.put(GroupController());
+    }
+    if (!Get.isRegistered<ReportController>()) {
+      Get.put(ReportController());
+    }
+    if (!Get.isRegistered<MonthPeriodController>()) {
+      Get.put(MonthPeriodController());
+    }
+    if (!Get.isRegistered<LogsController>()) {
+      Get.put(LogsController(logsService: Get.find<LogsService>()));
     }
   }
 
