@@ -118,7 +118,7 @@ class LogsPage extends StatelessWidget {
                         EdgeInsets.symmetric(horizontal: 12, vertical: 8),
                     isDense: true,
                   ),
-                  items: ['all', ...controller.categories]
+                  items: ['all', ...controller.categories.keys]
                       .map((cat) => DropdownMenuItem(
                             value: cat,
                             child: Text(cat == 'all' ? 'All Categories' : cat),

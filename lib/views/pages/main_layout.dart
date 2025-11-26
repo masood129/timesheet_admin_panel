@@ -1,13 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../../controllers/auth_controller.dart';
-import '../../controllers/dashboard_controller.dart';
-import '../../controllers/user_controller.dart';
-import '../../controllers/project_controller.dart';
-import '../../controllers/group_controller.dart';
-import '../../controllers/report_controller.dart';
-import '../../controllers/month_period_controller.dart';
-import '../../controllers/logs_controller.dart';
+
 import '../../data/services/logs_service.dart';
 import '../../data/services/api_service.dart';
 import '../widgets/sidebar.dart';
@@ -32,6 +26,20 @@ class _MainLayoutState extends State<MainLayout> {
   @override
   void initState() {
     super.initState();
+    // Initialize LogsService
+    final apiService = ApiService();
+    if (!Get.isRegistered<LogsService>()) {
+      Get.put(LogsService(
+        baseUrl: apiService.baseUrl,
+        token: apiService.token ?? '',
+      ));
+    }
+  }
+
+  List<Widget> _getPages() {
+    return [
+      const DashboardPage(),
+      const UsersPage(),
       const ProjectsPage(),
       const GroupsPage(),
       const ReportsPage(),
