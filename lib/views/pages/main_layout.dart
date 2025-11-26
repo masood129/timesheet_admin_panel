@@ -9,6 +9,7 @@ import '../../controllers/report_controller.dart';
 import '../../controllers/month_period_controller.dart';
 import '../../controllers/logs_controller.dart';
 import '../../data/services/logs_service.dart';
+import '../../data/services/api_service.dart';
 import '../widgets/sidebar.dart';
 import 'dashboard_page.dart';
 import 'users_page.dart';
@@ -31,21 +32,6 @@ class _MainLayoutState extends State<MainLayout> {
   @override
   void initState() {
     super.initState();
-    // Initialize controllers
-    Get.lazyPut(() => DashboardController());
-    Get.lazyPut(() => UserController());
-    Get.lazyPut(() => ProjectController());
-    Get.lazyPut(() => GroupController());
-    Get.lazyPut(() => ReportController());
-    Get.lazyPut(() => MonthPeriodController());
-    Get.lazyPut(() => LogsService());
-    Get.lazyPut(() => LogsController(logsService: Get.find()));
-  }
-
-  List<Widget> _getPages() {
-    return [
-      const DashboardPage(),
-      const UsersPage(),
       const ProjectsPage(),
       const GroupsPage(),
       const ReportsPage(),

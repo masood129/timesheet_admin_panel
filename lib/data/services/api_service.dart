@@ -46,6 +46,10 @@ class ApiService {
     ));
   }
 
+  // Public getters for baseUrl and token
+  String get baseUrl => AppConstants.baseUrl;
+  String? get token => _storage.read(AppConstants.tokenKey);
+
   // Auth
   Future<Map<String, dynamic>> login(String username) async {
     try {
