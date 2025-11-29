@@ -21,8 +21,10 @@ class _MonthPeriodDialogState extends State<MonthPeriodDialog> {
   late int month;
   late int startDay;
   late int startMonth;
+  late int startYear;
   late int endDay;
   late int endMonth;
+  late int endYear;
 
   final monthNames = [
     'فروردین',
@@ -48,16 +50,20 @@ class _MonthPeriodDialogState extends State<MonthPeriodDialog> {
       month = widget.period!.month;
       startDay = widget.period!.startDay;
       startMonth = widget.period!.startMonth;
+      startYear = widget.period!.startYear;
       endDay = widget.period!.endDay;
       endMonth = widget.period!.endMonth;
+      endYear = widget.period!.endYear;
     } else {
       // Create mode - use current year/month
       year = widget.controller.selectedYear.value;
       month = 1;
       startDay = 1;
       startMonth = 1;
+      startYear = year;
       endDay = 31;
       endMonth = 1;
+      endYear = year;
     }
   }
 
@@ -113,6 +119,27 @@ class _MonthPeriodDialogState extends State<MonthPeriodDialog> {
                 children: [
                   Expanded(
                     child: DropdownButtonFormField<int>(
+                      value: startYear,
+                      decoration: const InputDecoration(labelText: 'سال'),
+                      items: List.generate(
+                        10,
+                        (index) => DropdownMenuItem(
+                          value: year - 1 + index,
+                          child: Text('${year - 1 + index}'),
+                        ),
+                      ),
+                      onChanged: (value) {
+                        if (value != null) {
+                          setState(() {
+                            startYear = value;
+                          });
+                        }
+                      },
+                    ),
+                  ),
+                  const SizedBox(width: 8),
+                  Expanded(
+                    child: DropdownButtonFormField<int>(
                       value: startMonth,
                       decoration: const InputDecoration(labelText: 'ماه'),
                       items: List.generate(
@@ -131,7 +158,7 @@ class _MonthPeriodDialogState extends State<MonthPeriodDialog> {
                       },
                     ),
                   ),
-                  const SizedBox(width: 16),
+                  const SizedBox(width: 8),
                   Expanded(
                     child: DropdownButtonFormField<int>(
                       value: startDay,
@@ -164,6 +191,27 @@ class _MonthPeriodDialogState extends State<MonthPeriodDialog> {
                 children: [
                   Expanded(
                     child: DropdownButtonFormField<int>(
+                      value: endYear,
+                      decoration: const InputDecoration(labelText: 'سال'),
+                      items: List.generate(
+                        10,
+                        (index) => DropdownMenuItem(
+                          value: year - 1 + index,
+                          child: Text('${year - 1 + index}'),
+                        ),
+                      ),
+                      onChanged: (value) {
+                        if (value != null) {
+                          setState(() {
+                            endYear = value;
+                          });
+                        }
+                      },
+                    ),
+                  ),
+                  const SizedBox(width: 8),
+                  Expanded(
+                    child: DropdownButtonFormField<int>(
                       value: endMonth,
                       decoration: const InputDecoration(labelText: 'ماه'),
                       items: List.generate(
@@ -182,7 +230,7 @@ class _MonthPeriodDialogState extends State<MonthPeriodDialog> {
                       },
                     ),
                   ),
-                  const SizedBox(width: 16),
+                  const SizedBox(width: 8),
                   Expanded(
                     child: DropdownButtonFormField<int>(
                       value: endDay,
@@ -223,7 +271,7 @@ class _MonthPeriodDialogState extends State<MonthPeriodDialog> {
                     ),
                     const SizedBox(height: 4),
                     Text(
-                      '$startDay ${monthNames[startMonth - 1]} تا $endDay ${monthNames[endMonth - 1]}',
+                      _getSummaryText(),
                       style: const TextStyle(fontSize: 16),
                     ),
                   ],
@@ -256,8 +304,10 @@ class _MonthPeriodDialogState extends State<MonthPeriodDialog> {
         month: month,
         startDay: startDay,
         startMonth: startMonth,
+        startYear: startYear,
         endDay: endDay,
         endMonth: endMonth,
+        endYear: endYear,
       );
     } else {
       // Create mode - for new periods or editing default periods
@@ -266,13 +316,27 @@ class _MonthPeriodDialogState extends State<MonthPeriodDialog> {
         month: month,
         startDay: startDay,
         startMonth: startMonth,
+        startYear: startYear,
         endDay: endDay,
         endMonth: endMonth,
+        endYear: endYear,
       );
     }
 
     if (success && mounted) {
       Navigator.pop(context);
     }
+  }
+
+  String _getSummaryText() {
+    String startText = '$startDay ${monthNames[startMonth - 1]}';
+    if (startYear != year) {
+      startText += ' $startYear';
+    }
+    String endText = '$endDay ${monthNames[endMonth - 1]}';
+    if (endYear != year) {
+      endText += ' $endYear';
+    }
+    return '$startText تا $endText';
   }
 }

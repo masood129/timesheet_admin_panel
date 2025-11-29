@@ -3,8 +3,10 @@ class MonthPeriodModel {
   final int month;
   final int startDay;
   final int startMonth;
+  final int startYear;
   final int endDay;
   final int endMonth;
+  final int endYear;
   final bool?
       isCustom; // Optional: indicates if this is a custom setting or default
 
@@ -13,8 +15,10 @@ class MonthPeriodModel {
     required this.month,
     required this.startDay,
     required this.startMonth,
+    required this.startYear,
     required this.endDay,
     required this.endMonth,
+    required this.endYear,
     this.isCustom,
   });
 
@@ -24,8 +28,10 @@ class MonthPeriodModel {
       month: json['Month'] ?? json['month'],
       startDay: json['StartDay'] ?? json['startDay'],
       startMonth: json['StartMonth'] ?? json['startMonth'],
+      startYear: json['StartYear'] ?? json['startYear'] ?? json['Year'] ?? json['year'],
       endDay: json['EndDay'] ?? json['endDay'],
       endMonth: json['EndMonth'] ?? json['endMonth'],
+      endYear: json['EndYear'] ?? json['endYear'] ?? json['Year'] ?? json['year'],
       isCustom: json['IsCustom'] ?? json['isCustom'],
     );
   }
@@ -36,8 +42,10 @@ class MonthPeriodModel {
       'Month': month,
       'StartDay': startDay,
       'StartMonth': startMonth,
+      'StartYear': startYear,
       'EndDay': endDay,
       'EndMonth': endMonth,
+      'EndYear': endYear,
       if (isCustom != null) 'IsCustom': isCustom,
     };
   }
@@ -101,7 +109,15 @@ class MonthPeriodModel {
 
   /// Helper: Format period as readable string
   String get periodDisplay {
-    return '$startDay $startMonthName تا $endDay $endMonthName';
+    String startDisplay = '$startDay $startMonthName';
+    if (startYear != year) {
+      startDisplay += ' $startYear';
+    }
+    String endDisplay = '$endDay $endMonthName';
+    if (endYear != year) {
+      endDisplay += ' $endYear';
+    }
+    return '$startDisplay تا $endDisplay';
   }
 
   @override

@@ -53,8 +53,10 @@ class MonthPeriodController extends GetxController {
     required int month,
     required int startDay,
     required int startMonth,
+    required int startYear,
     required int endDay,
     required int endMonth,
+    required int endYear,
   }) async {
     try {
       // دریافت تاریخ جاری شمسی
@@ -65,8 +67,10 @@ class MonthPeriodController extends GetxController {
         'Month': month,
         'StartDay': startDay,
         'StartMonth': startMonth,
+        'StartYear': startYear,
         'EndDay': endDay,
         'EndMonth': endMonth,
+        'EndYear': endYear,
         'CurrentJalaliYear': now.year,
         'CurrentJalaliMonth': now.month,
       });
@@ -87,8 +91,10 @@ class MonthPeriodController extends GetxController {
     required int month,
     required int startDay,
     required int startMonth,
+    required int startYear,
     required int endDay,
     required int endMonth,
+    required int endYear,
   }) async {
     try {
       final now = Jalali.now();
@@ -96,8 +102,10 @@ class MonthPeriodController extends GetxController {
       await _apiService.updateMonthPeriod(year, month, {
         'StartDay': startDay,
         'StartMonth': startMonth,
+        'StartYear': startYear,
         'EndDay': endDay,
         'EndMonth': endMonth,
+        'EndYear': endYear,
         'CurrentJalaliYear': now.year,
         'CurrentJalaliMonth': now.month,
       });
