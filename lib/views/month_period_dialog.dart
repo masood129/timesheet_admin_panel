@@ -41,6 +41,27 @@ class _MonthPeriodDialogState extends State<MonthPeriodDialog> {
     'اسفند',
   ];
 
+  /// محاسبه طول واقعی یک ماه شمسی
+  int _getMonthLength(int year, int month) {
+    // ماه‌های 1 تا 6: 31 روز
+    if (month <= 6) {
+      return 31;
+    }
+    // ماه‌های 7 تا 11: 30 روز
+    if (month <= 11) {
+      return 30;
+    }
+    // اسفند: بررسی سال کبیسه
+    // الگوریتم ساده برای سال کبیسه شمسی (چرخه 33 ساله)
+    int yearInCycle = year % 33;
+    if (yearInCycle == 1 || yearInCycle == 5 || yearInCycle == 9 || 
+        yearInCycle == 13 || yearInCycle == 17 || yearInCycle == 22 || 
+        yearInCycle == 26 || yearInCycle == 30) {
+      return 30; // سال کبیسه
+    }
+    return 29; // سال عادی
+  }
+
   @override
   void initState() {
     super.initState();
@@ -61,9 +82,9 @@ class _MonthPeriodDialogState extends State<MonthPeriodDialog> {
       startDay = 1;
       startMonth = 1;
       startYear = year;
-      endDay = 31;
       endMonth = 1;
       endYear = year;
+      endDay = _getMonthLength(endYear, endMonth); // استفاده از طول واقعی ماه
     }
   }
 
@@ -132,6 +153,11 @@ class _MonthPeriodDialogState extends State<MonthPeriodDialog> {
                         if (value != null) {
                           setState(() {
                             startYear = value;
+                            // اگر روز انتخاب شده بیشتر از طول ماه جدید است، آن را محدود کن
+                            int maxDay = _getMonthLength(startYear, startMonth);
+                            if (startDay > maxDay) {
+                              startDay = maxDay;
+                            }
                           });
                         }
                       },
@@ -153,6 +179,11 @@ class _MonthPeriodDialogState extends State<MonthPeriodDialog> {
                         if (value != null) {
                           setState(() {
                             startMonth = value;
+                            // اگر روز انتخاب شده بیشتر از طول ماه جدید است، آن را محدود کن
+                            int maxDay = _getMonthLength(startYear, startMonth);
+                            if (startDay > maxDay) {
+                              startDay = maxDay;
+                            }
                           });
                         }
                       },
@@ -164,7 +195,7 @@ class _MonthPeriodDialogState extends State<MonthPeriodDialog> {
                       value: startDay,
                       decoration: const InputDecoration(labelText: 'روز'),
                       items: List.generate(
-                        31,
+                        _getMonthLength(startYear, startMonth),
                         (index) => DropdownMenuItem(
                           value: index + 1,
                           child: Text('${index + 1}'),
@@ -174,6 +205,11 @@ class _MonthPeriodDialogState extends State<MonthPeriodDialog> {
                         if (value != null) {
                           setState(() {
                             startDay = value;
+                            // اگر روز انتخاب شده بیشتر از طول ماه جدید است، آن را محدود کن
+                            int maxDay = _getMonthLength(startYear, startMonth);
+                            if (startDay > maxDay) {
+                              startDay = maxDay;
+                            }
                           });
                         }
                       },
@@ -204,6 +240,11 @@ class _MonthPeriodDialogState extends State<MonthPeriodDialog> {
                         if (value != null) {
                           setState(() {
                             endYear = value;
+                            // اگر روز انتخاب شده بیشتر از طول ماه جدید است، آن را محدود کن
+                            int maxDay = _getMonthLength(endYear, endMonth);
+                            if (endDay > maxDay) {
+                              endDay = maxDay;
+                            }
                           });
                         }
                       },
@@ -225,6 +266,11 @@ class _MonthPeriodDialogState extends State<MonthPeriodDialog> {
                         if (value != null) {
                           setState(() {
                             endMonth = value;
+                            // اگر روز انتخاب شده بیشتر از طول ماه جدید است، آن را محدود کن
+                            int maxDay = _getMonthLength(endYear, endMonth);
+                            if (endDay > maxDay) {
+                              endDay = maxDay;
+                            }
                           });
                         }
                       },
@@ -236,7 +282,7 @@ class _MonthPeriodDialogState extends State<MonthPeriodDialog> {
                       value: endDay,
                       decoration: const InputDecoration(labelText: 'روز'),
                       items: List.generate(
-                        31,
+                        _getMonthLength(endYear, endMonth),
                         (index) => DropdownMenuItem(
                           value: index + 1,
                           child: Text('${index + 1}'),
@@ -246,6 +292,11 @@ class _MonthPeriodDialogState extends State<MonthPeriodDialog> {
                         if (value != null) {
                           setState(() {
                             endDay = value;
+                            // اگر روز انتخاب شده بیشتر از طول ماه جدید است، آن را محدود کن
+                            int maxDay = _getMonthLength(endYear, endMonth);
+                            if (endDay > maxDay) {
+                              endDay = maxDay;
+                            }
                           });
                         }
                       },
