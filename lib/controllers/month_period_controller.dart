@@ -77,19 +77,10 @@ class MonthPeriodController extends GetxController {
 
       showCustomSnackbar('موفق', 'بازه ماه با موفقیت ایجاد شد');
       
-      // اگر بازه به سال بعد ادامه پیدا می‌کند، سال بعد را هم refresh کن
-      if (endYear != year || endMonth != month) {
-        // بررسی اینکه آیا به سال بعد می‌رود
-        if (endYear > year || (endYear == year && endMonth == 12)) {
-          // اگر به سال بعد می‌رود، سال بعد را هم refresh کن
-          if (endYear == year && endMonth == 12) {
-            await fetchYearMonthPeriods(year: year + 1);
-          } else if (endYear > year) {
-            await fetchYearMonthPeriods(year: endYear);
-          }
-        }
-      }
+      // Refresh ماه‌های مجاور که ممکن است به صورت خودکار تنظیم شده باشند
+      await _refreshNeighborMonths(year, month, startYear, startMonth, startDay, endYear, endMonth, endDay);
       
+      // Refresh سال جاری
       await fetchYearMonthPeriods();
       return true;
     } catch (e) {
@@ -126,24 +117,10 @@ class MonthPeriodController extends GetxController {
 
       showCustomSnackbar('موفق', 'بازه ماه با موفقیت بروزرسانی شد');
       
-      // اگر بازه به سال بعد ادامه پیدا می‌کند، سال بعد را هم refresh کن
-      if (endYear != year || endMonth != month) {
-        // بررسی اینکه آیا به سال بعد می‌رود
-        int nextYear = year;
-        int nextMonth = month + 1;
-        if (nextMonth > 12) {
-          nextYear = year + 1;
-          nextMonth = 1;
-        }
-        
-        if (endYear > year || (endYear == year && endMonth > month)) {
-          // اگر به سال بعد می‌رود، سال بعد را هم refresh کن
-          if (endYear > year || (endYear == year && endMonth == 12 && nextYear == endYear + 1)) {
-            await fetchYearMonthPeriods(year: endYear + 1);
-          }
-        }
-      }
+      // Refresh ماه‌های مجاور که ممکن است به صورت خودکار تنظیم شده باشند
+      await _refreshNeighborMonths(year, month, startYear, startMonth, startDay, endYear, endMonth, endDay);
       
+      // Refresh سال جاری
       await fetchYearMonthPeriods();
       return true;
     } catch (e) {
@@ -206,5 +183,67 @@ class MonthPeriodController extends GetxController {
       'اسفند'
     ];
     return monthNames[month - 1];
+  }
+
+  /// Refresh ماه‌های مجاور که ممکن است به صورت خودکار تنظیم شده باشند
+  Future<void> _refreshNeighborMonths(
+    int year,
+    int month,
+    int startYear,
+    int startMonth,
+    int startDay,
+    int endYear,
+    int endMonth,
+    int endDay,
+  ) async {
+    // محاسبه ماه قبل و بعد
+    int prevMonth = month == 1 ? 12 : month - 1;
+    int prevYear = month == 1 ? year - 1 : year;
+    int nextMonth = month == 12 ? 1 : month + 1;
+    int nextYear = month == 12 ? year + 1 : year;
+
+    // بررسی اینکه آیا بازه در همان ماه است یا به ماه‌های دیگر ادامه می‌دهد
+    bool isStartInSameMonth = startMonth == month && startYear == year;
+    bool isEndInSameMonth = endMonth == month && endYear == year;
+
+    // اگر بازه از اول ماه شروع نمی‌شود، ماه قبل را refresh کن
+    if (isStartInSameMonth && startDay > 1) {
+      // اگر از اول ماه شروع نمی‌شود، ماه قبل را refresh کن
+      if (prevYear == selectedYear.value || prevYear == year) {
+        await fetchYearMonthPeriods(year: prevYear);
+      }
+    } else if (startMonth == prevMonth && startYear == prevYear) {
+      // اگر بازه از ماه قبل شروع می‌شود، ماه قبل را refresh کن
+      if (prevYear == selectedYear.value || prevYear == year) {
+        await fetchYearMonthPeriods(year: prevYear);
+      }
+    }
+
+    // اگر بازه تا آخر ماه تمام نمی‌شود، ماه بعد را refresh کن
+    if (isEndInSameMonth) {
+      // بررسی اینکه آیا تا آخر ماه تمام می‌شود (تقریبی - برای ماه‌های 30 روزه)
+      int monthLength = month <= 6 ? 31 : (month == 12 ? 29 : 30);
+      if (endDay < monthLength) {
+        // اگر تا آخر ماه تمام نمی‌شود، ماه بعد را refresh کن
+        if (nextYear == selectedYear.value || nextYear == year) {
+          await fetchYearMonthPeriods(year: nextYear);
+        }
+      }
+    } else if (endMonth == nextMonth && endYear == nextYear) {
+      // اگر بازه به ماه بعد ادامه می‌دهد، ماه بعد را refresh کن
+      if (nextYear == selectedYear.value || nextYear == year) {
+        await fetchYearMonthPeriods(year: nextYear);
+      }
+    }
+
+    // اگر بازه به سال بعد ادامه می‌دهد، سال بعد را هم refresh کن
+    if (endYear > year || (endYear == year && endMonth == 12 && nextYear > year)) {
+      await fetchYearMonthPeriods(year: endYear > year ? endYear : year + 1);
+    }
+
+    // اگر بازه از سال قبل شروع می‌شود، سال قبل را هم refresh کن
+    if (startYear < year || (startYear == year && startMonth == 1 && prevYear < year)) {
+      await fetchYearMonthPeriods(year: startYear < year ? startYear : year - 1);
+    }
   }
 }
