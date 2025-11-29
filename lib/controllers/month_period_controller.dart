@@ -76,6 +76,20 @@ class MonthPeriodController extends GetxController {
       });
 
       showCustomSnackbar('موفق', 'بازه ماه با موفقیت ایجاد شد');
+      
+      // اگر بازه به سال بعد ادامه پیدا می‌کند، سال بعد را هم refresh کن
+      if (endYear != year || endMonth != month) {
+        // بررسی اینکه آیا به سال بعد می‌رود
+        if (endYear > year || (endYear == year && endMonth == 12)) {
+          // اگر به سال بعد می‌رود، سال بعد را هم refresh کن
+          if (endYear == year && endMonth == 12) {
+            await fetchYearMonthPeriods(year: year + 1);
+          } else if (endYear > year) {
+            await fetchYearMonthPeriods(year: endYear);
+          }
+        }
+      }
+      
       await fetchYearMonthPeriods();
       return true;
     } catch (e) {
@@ -111,6 +125,25 @@ class MonthPeriodController extends GetxController {
       });
 
       showCustomSnackbar('موفق', 'بازه ماه با موفقیت بروزرسانی شد');
+      
+      // اگر بازه به سال بعد ادامه پیدا می‌کند، سال بعد را هم refresh کن
+      if (endYear != year || endMonth != month) {
+        // بررسی اینکه آیا به سال بعد می‌رود
+        int nextYear = year;
+        int nextMonth = month + 1;
+        if (nextMonth > 12) {
+          nextYear = year + 1;
+          nextMonth = 1;
+        }
+        
+        if (endYear > year || (endYear == year && endMonth > month)) {
+          // اگر به سال بعد می‌رود، سال بعد را هم refresh کن
+          if (endYear > year || (endYear == year && endMonth == 12 && nextYear == endYear + 1)) {
+            await fetchYearMonthPeriods(year: endYear + 1);
+          }
+        }
+      }
+      
       await fetchYearMonthPeriods();
       return true;
     } catch (e) {

@@ -295,6 +295,47 @@ class _MonthPeriodDialogState extends State<MonthPeriodDialog> {
   }
 
   void _save() async {
+    // اعتبارسنجی: بررسی اینکه بازه معتبر است
+    if (startYear > endYear ||
+        (startYear == endYear && startMonth > endMonth) ||
+        (startYear == endYear && startMonth == endMonth && startDay > endDay)) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('تاریخ شروع نمی‌تواند بعد از تاریخ پایان باشد'),
+            backgroundColor: Colors.red,
+          ),
+        );
+      }
+      return;
+    }
+
+    // اعتبارسنجی: اگر بازه به ماه بعد ادامه می‌دهد، ماه بعد نباید گذشته باشد
+    if (endMonth != month || endYear != year) {
+      // بازه به ماه بعد ادامه می‌دهد
+      int nextMonth, nextYear;
+      if (endMonth == 12) {
+        nextYear = endYear + 1;
+        nextMonth = 1;
+      } else {
+        nextYear = endYear;
+        nextMonth = endMonth + 1;
+      }
+      
+      // بررسی اینکه ماه بعد قابل ویرایش است
+      if (!widget.controller.isMonthEditable(nextYear, nextMonth)) {
+        if (mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              content: Text('نمی‌توانید بازه را تا ماه گذشته ادامه دهید'),
+              backgroundColor: Colors.red,
+            ),
+          );
+        }
+        return;
+      }
+    }
+
     bool success;
 
     if (widget.period != null && (widget.period!.isCustom == true)) {
@@ -337,6 +378,34 @@ class _MonthPeriodDialogState extends State<MonthPeriodDialog> {
     if (endYear != year) {
       endText += ' $endYear';
     }
-    return '$startText تا $endText';
+    
+    String summary = '$startText تا $endText';
+    
+    // اگر بازه به ماه بعد ادامه پیدا می‌کند، اطلاعات ماه بعد را نمایش بده
+    if (endMonth != month || endYear != year) {
+      int nextMonth, nextYear;
+      if (endMonth == 12) {
+        nextYear = endYear + 1;
+        nextMonth = 1;
+      } else {
+        nextYear = endYear;
+        nextMonth = endMonth + 1;
+      }
+      
+      // محاسبه طول ماه بعد (تقریبی)
+      int nextMonthLength = 30;
+      if (nextMonth <= 6) {
+        nextMonthLength = 31;
+      } else if (nextMonth == 12) {
+        // اسفند - بررسی کبیسه (تقریبی)
+        nextMonthLength = 29;
+      }
+      
+      summary += '\n\nماه بعد (${monthNames[nextMonth - 1]} $nextYear):';
+      summary += '\nاز ${endDay + 1} ${monthNames[endMonth - 1]} تا $nextMonthLength ${monthNames[nextMonth - 1]}';
+      summary += '\n(محاسبه خودکار)';
+    }
+    
+    return summary;
   }
 }
