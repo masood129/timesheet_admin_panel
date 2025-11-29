@@ -23,7 +23,7 @@ class AppTheme {
   // Light Theme
   static ThemeData lightTheme = ThemeData(
     useMaterial3: true,
-    colorScheme: ColorScheme.light(
+    colorScheme: const ColorScheme.light(
       primary: primaryColor,
       secondary: secondaryColor,
       surface: surfaceColor,
@@ -174,10 +174,10 @@ class AppTheme {
   static ThemeData darkTheme = ThemeData(
     useMaterial3: true,
     brightness: Brightness.dark,
-    colorScheme: ColorScheme.dark(
+    colorScheme: const ColorScheme.dark(
       primary: primaryColor,
       secondary: secondaryColor,
-      surface: const Color(0xFF1E1E1E),
+      surface: Color(0xFF1E1E1E),
       error: errorColor,
     ),
   );

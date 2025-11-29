@@ -76,23 +76,23 @@ class ProjectsPage extends StatelessWidget {
                           topRight: Radius.circular(12),
                         ),
                       ),
-                      child: Row(
+                      child: const Row(
                         children: [
-                          const Expanded(
+                          Expanded(
                             flex: 1,
                             child: Text(
                               'شناسه',
                               style: TextStyle(fontWeight: FontWeight.bold),
                             ),
                           ),
-                          const Expanded(
+                          Expanded(
                             flex: 3,
                             child: Text(
                               'نام پروژه',
                               style: TextStyle(fontWeight: FontWeight.bold),
                             ),
                           ),
-                          const Expanded(
+                          Expanded(
                             flex: 1,
                             child: Text(
                               'عملیات',
