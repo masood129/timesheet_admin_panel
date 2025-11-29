@@ -50,18 +50,8 @@ class _GroupDialogState extends State<GroupDialog> {
         success = await controller.updateGroup(
           widget.group!.groupId,
           _groupNameController.text,
+          _selectedManagerId,
         );
-        // Note: Update group manager is a separate API call in the current controller structure
-        // If we want to update manager here, we need to call setGroupManager too.
-        // For now, let's stick to the existing updateGroup logic which only updates name,
-        // or check if updateGroup supports managerId.
-        // The controller's updateGroup only takes groupName.
-        // The backend updateGroup takes ManagerId.
-        // Let's update the controller's updateGroup later if needed, but for now focus on CREATE.
-        if (success && _selectedManagerId != widget.group!.managerId) {
-          await controller.setGroupManager(
-              widget.group!.groupId, _selectedManagerId!);
-        }
       }
 
       if (success) {

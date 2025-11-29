@@ -72,8 +72,8 @@ class GroupController extends GetxController {
   }) async {
     try {
       await _apiService.createGroup({
-        'GroupName': groupName,
-        'ManagerId': managerId,
+        'groupName': groupName,
+        'managerId': managerId,
       });
       showCustomSnackbar('موفق', 'گروه با موفقیت ایجاد شد');
       await fetchGroups();
@@ -88,10 +88,12 @@ class GroupController extends GetxController {
   Future<bool> updateGroup(
     int id,
     String groupName,
+    int? managerId,
   ) async {
     try {
       await _apiService.updateGroup(id, {
-        'GroupName': groupName,
+        'groupName': groupName,
+        'managerId': managerId,
       });
       showCustomSnackbar('موفق', 'گروه با موفقیت بروزرسانی شد');
       await fetchGroups();
