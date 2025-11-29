@@ -104,7 +104,7 @@ class _MonthPeriodDialogState extends State<MonthPeriodDialog> {
               // Month selector (only for create mode)
               if (!isEditMode)
                 DropdownButtonFormField<int>(
-                  value: month,
+                  initialValue: month,
                   decoration: const InputDecoration(labelText: 'ماه'),
                   items: List.generate(
                     12,
@@ -140,7 +140,7 @@ class _MonthPeriodDialogState extends State<MonthPeriodDialog> {
                 children: [
                   Expanded(
                     child: DropdownButtonFormField<int>(
-                      value: startYear,
+                      initialValue: startYear,
                       decoration: const InputDecoration(labelText: 'سال'),
                       items: List.generate(
                         10,
@@ -166,7 +166,7 @@ class _MonthPeriodDialogState extends State<MonthPeriodDialog> {
                   const SizedBox(width: 8),
                   Expanded(
                     child: DropdownButtonFormField<int>(
-                      value: startMonth,
+                      initialValue: startMonth,
                       decoration: const InputDecoration(labelText: 'ماه'),
                       items: List.generate(
                         12,
@@ -192,7 +192,7 @@ class _MonthPeriodDialogState extends State<MonthPeriodDialog> {
                   const SizedBox(width: 8),
                   Expanded(
                     child: DropdownButtonFormField<int>(
-                      value: startDay,
+                      initialValue: startDay,
                       decoration: const InputDecoration(labelText: 'روز'),
                       items: List.generate(
                         _getMonthLength(startYear, startMonth),
@@ -227,7 +227,7 @@ class _MonthPeriodDialogState extends State<MonthPeriodDialog> {
                 children: [
                   Expanded(
                     child: DropdownButtonFormField<int>(
-                      value: endYear,
+                      initialValue: endYear,
                       decoration: const InputDecoration(labelText: 'سال'),
                       items: List.generate(
                         10,
@@ -253,7 +253,7 @@ class _MonthPeriodDialogState extends State<MonthPeriodDialog> {
                   const SizedBox(width: 8),
                   Expanded(
                     child: DropdownButtonFormField<int>(
-                      value: endMonth,
+                      initialValue: endMonth,
                       decoration: const InputDecoration(labelText: 'ماه'),
                       items: List.generate(
                         12,
@@ -279,7 +279,7 @@ class _MonthPeriodDialogState extends State<MonthPeriodDialog> {
                   const SizedBox(width: 8),
                   Expanded(
                     child: DropdownButtonFormField<int>(
-                      value: endDay,
+                      initialValue: endDay,
                       decoration: const InputDecoration(labelText: 'روز'),
                       items: List.generate(
                         _getMonthLength(endYear, endMonth),

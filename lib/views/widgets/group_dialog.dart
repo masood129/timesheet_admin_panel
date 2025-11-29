@@ -54,7 +54,7 @@ class _GroupDialogState extends State<GroupDialog> {
         );
       }
 
-      if (success) {
+      if (success && context.mounted) {
         Navigator.of(context).pop();
       }
     }
@@ -96,7 +96,7 @@ class _GroupDialogState extends State<GroupDialog> {
                   return const Center(child: CircularProgressIndicator());
                 }
                 return DropdownButtonFormField<int>(
-                  value: _selectedManagerId,
+                  initialValue: _selectedManagerId,
                   decoration: const InputDecoration(
                     labelText: 'مدیر گروه',
                     prefixIcon: Icon(Icons.person),

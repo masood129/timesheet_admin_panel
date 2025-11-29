@@ -150,6 +150,7 @@ class LogsController extends GetxController {
   }
 
   /// Refresh logs
+  @override
   void refresh() {
     currentPage.value = 1;
     loadLogs();

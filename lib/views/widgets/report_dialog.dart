@@ -36,7 +36,7 @@ class _ReportDialogState extends State<ReportDialog> {
       _commentController.text,
     );
 
-    if (success) {
+    if (success && context.mounted) {
       Navigator.of(context).pop();
     }
   }
@@ -91,7 +91,7 @@ class _ReportDialogState extends State<ReportDialog> {
 
               // Action selector
               DropdownButtonFormField<String>(
-                value: _selectedAction,
+                initialValue: _selectedAction,
                 decoration: const InputDecoration(
                   labelText: 'عملیات',
                   prefixIcon: Icon(Icons.check_circle),

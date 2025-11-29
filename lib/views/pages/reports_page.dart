@@ -23,7 +23,7 @@ class ReportsPage extends StatelessWidget {
                 // Status filter
                 Expanded(
                   child: Obx(() => DropdownButtonFormField<String>(
-                        value: controller.selectedStatus.value,
+                        initialValue: controller.selectedStatus.value,
                         decoration: const InputDecoration(
                           labelText: 'فیلتر وضعیت',
                           prefixIcon: Icon(Icons.filter_list),
@@ -297,7 +297,7 @@ class ReportsPage extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
       decoration: BoxDecoration(
-        color: color.withOpacity(0.1),
+        color: color.withValues(alpha: 0.1),
         borderRadius: BorderRadius.circular(12),
         border: Border.all(color: color),
       ),

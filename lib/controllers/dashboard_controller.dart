@@ -28,6 +28,7 @@ class DashboardController extends GetxController {
     }
   }
 
+  @override
   void refresh() {
     fetchStatistics();
   }

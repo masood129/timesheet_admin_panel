@@ -126,7 +126,7 @@ class _UserDialogState extends State<UserDialog> {
 
               // Role
               DropdownButtonFormField<String>(
-                value: _selectedRole,
+                initialValue: _selectedRole,
                 decoration: const InputDecoration(
                   labelText: 'نقش',
                   prefixIcon: Icon(Icons.admin_panel_settings),

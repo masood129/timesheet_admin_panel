@@ -52,7 +52,7 @@ class _ProjectDialogState extends State<ProjectDialog> {
         );
       }
 
-      if (success) {
+      if (success && context.mounted) {
         Navigator.of(context).pop();
       }
     }

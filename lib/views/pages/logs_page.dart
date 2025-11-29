@@ -110,7 +110,7 @@ class LogsPage extends StatelessWidget {
               SizedBox(
                 width: 200,
                 child: DropdownButtonFormField<String>(
-                  value: controller.selectedCategory.value,
+                  initialValue: controller.selectedCategory.value,
                   decoration: const InputDecoration(
                     labelText: 'Category',
                     border: OutlineInputBorder(),
@@ -131,7 +131,7 @@ class LogsPage extends StatelessWidget {
               SizedBox(
                 width: 150,
                 child: DropdownButtonFormField<String>(
-                  value: controller.selectedLevel.value,
+                  initialValue: controller.selectedLevel.value,
                   decoration: const InputDecoration(
                     labelText: 'Level',
                     border: OutlineInputBorder(),
@@ -234,7 +234,7 @@ class LogsPage extends StatelessWidget {
             Container(
               padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
               decoration: BoxDecoration(
-                color: levelColor.withOpacity(0.1),
+                color: levelColor.withValues(alpha: 0.1),
                 borderRadius: BorderRadius.circular(4),
                 border: Border.all(color: levelColor),
               ),
@@ -251,7 +251,7 @@ class LogsPage extends StatelessWidget {
             Container(
               padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
               decoration: BoxDecoration(
-                color: Colors.blue.withOpacity(0.1),
+                color: Colors.blue.withValues(alpha: 0.1),
                 borderRadius: BorderRadius.circular(4),
               ),
               child: Text(
@@ -304,7 +304,7 @@ class LogsPage extends StatelessWidget {
         color: Colors.white,
         boxShadow: [
           BoxShadow(
-            color: Colors.grey.withOpacity(0.2),
+            color: Colors.grey.withValues(alpha: 0.2),
             spreadRadius: 1,
             blurRadius: 3,
             offset: const Offset(0, -1),
