@@ -73,12 +73,19 @@ class ProjectController extends GetxController {
 
   Future<bool> updateProject(
     int id,
-    String projectName,
-  ) async {
+    String projectName, {
+    int? newId,
+  }) async {
     try {
-      await _apiService.updateProject(id, {
+      final data = <String, dynamic>{
         'projectName': projectName,
-      });
+      };
+      
+      if (newId != null) {
+        data['id'] = newId;
+      }
+      
+      await _apiService.updateProject(id, data);
       showCustomSnackbar('موفق', 'پروژه با موفقیت بروزرسانی شد');
       await fetchProjects();
       return true;

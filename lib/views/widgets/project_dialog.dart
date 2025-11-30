@@ -20,7 +20,9 @@ class _ProjectDialogState extends State<ProjectDialog> {
   @override
   void initState() {
     super.initState();
-    _projectIdController = TextEditingController();
+    _projectIdController = TextEditingController(
+      text: widget.project?.id.toString() ?? '',
+    );
     _projectNameController = TextEditingController(
       text: widget.project?.projectName ?? '',
     );
@@ -49,6 +51,7 @@ class _ProjectDialogState extends State<ProjectDialog> {
         success = await controller.updateProject(
           widget.project!.id,
           _projectNameController.text,
+          newId: int.parse(_projectIdController.text),
         );
       }
 
@@ -71,27 +74,26 @@ class _ProjectDialogState extends State<ProjectDialog> {
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              // Project ID (only for new projects)
-              if (!isEdit)
-                TextFormField(
-                  controller: _projectIdController,
-                  decoration: const InputDecoration(
-                    labelText: 'شناسه پروژه',
-                    prefixIcon: Icon(Icons.tag),
-                  ),
-                  keyboardType: TextInputType.number,
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'شناسه پروژه الزامی است';
-                    }
-                    if (int.tryParse(value) == null) {
-                      return 'شناسه باید عدد باشد';
-                    }
-                    return null;
-                  },
+              // Project ID
+              TextFormField(
+                controller: _projectIdController,
+                decoration: const InputDecoration(
+                  labelText: 'کد پروژه',
+                  prefixIcon: Icon(Icons.tag),
                 ),
+                keyboardType: TextInputType.number,
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'کد پروژه الزامی است';
+                  }
+                  if (int.tryParse(value) == null) {
+                    return 'کد باید عدد باشد';
+                  }
+                  return null;
+                },
+              ),
 
-              if (!isEdit) const SizedBox(height: 16),
+              const SizedBox(height: 16),
 
               // Project Name
               TextFormField(
