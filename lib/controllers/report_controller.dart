@@ -14,6 +14,7 @@ class ReportController extends GetxController {
   final selectedUserId = Rx<int?>(null);
   final selectedYear = Rx<int?>(null);
   final selectedMonth = Rx<int?>(null);
+  final searchQuery = Rx<String?>(null);
 
   @override
   void onInit() {
@@ -31,6 +32,7 @@ class ReportController extends GetxController {
         userId: selectedUserId.value,
         year: selectedYear.value,
         month: selectedMonth.value,
+        search: searchQuery.value,
         page: page,
         limit: 20,
       );
@@ -117,11 +119,17 @@ class ReportController extends GetxController {
     fetchReports();
   }
 
+  void setSearchQuery(String? query) {
+    searchQuery.value = query;
+    fetchReports();
+  }
+
   void clearFilters() {
     selectedStatus.value = null;
     selectedUserId.value = null;
     selectedYear.value = null;
     selectedMonth.value = null;
+    searchQuery.value = null;
     fetchReports();
   }
 }

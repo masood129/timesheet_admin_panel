@@ -10,51 +10,84 @@ class ReportsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final controller = Get.find<ReportController>();
+    final searchController = TextEditingController();
 
     return Scaffold(
       backgroundColor: AppTheme.backgroundColor,
       body: Column(
         children: [
-          // Toolbar with filters
+          // Toolbar with filters and search
           Container(
             padding: const EdgeInsets.all(24),
-            child: Row(
+            child: Column(
               children: [
-                // Status filter
-                Expanded(
-                  child: Obx(() => DropdownButtonFormField<String>(
-                        initialValue: controller.selectedStatus.value,
+                Row(
+                  children: [
+                    // Search field
+                    Expanded(
+                      flex: 2,
+                      child: TextField(
+                        controller: searchController,
                         decoration: const InputDecoration(
-                          labelText: 'فیلتر وضعیت',
-                          prefixIcon: Icon(Icons.filter_list),
+                          labelText: 'جستجو در گزارشات',
+                          hintText: 'نام کاربر، شناسه یا توضیحات...',
+                          prefixIcon: Icon(Icons.search),
                         ),
-                        items: const [
-                          DropdownMenuItem(value: null, child: Text('همه')),
-                          DropdownMenuItem(
-                              value: 'draft', child: Text('پیش‌نویس')),
-                          DropdownMenuItem(
-                              value: 'submitted_to_group_manager',
-                              child: Text('ارسال به مدیر گروه')),
-                          DropdownMenuItem(
-                              value: 'submitted_to_general_manager',
-                              child: Text('ارسال به مدیر کل')),
-                          DropdownMenuItem(
-                              value: 'submitted_to_finance',
-                              child: Text('ارسال به مالی')),
-                          DropdownMenuItem(
-                              value: 'approved', child: Text('تایید شده')),
-                        ],
-                        onChanged: (value) => controller.setStatusFilter(value),
-                      )),
-                ),
+                        onChanged: (value) {
+                          // Debounce search
+                          Future.delayed(const Duration(milliseconds: 500), () {
+                            if (searchController.text == value) {
+                              controller.setSearchQuery(
+                                  value.isEmpty ? null : value);
+                            }
+                          });
+                        },
+                      ),
+                    ),
 
-                const SizedBox(width: 16),
+                    const SizedBox(width: 16),
 
-                // Clear filters button
-                ElevatedButton.icon(
-                  onPressed: () => controller.clearFilters(),
-                  icon: const Icon(Icons.clear),
-                  label: const Text('پاک کردن فیلترها'),
+                    // Status filter
+                    Expanded(
+                      child: Obx(() => DropdownButtonFormField<String>(
+                            value: controller.selectedStatus.value,
+                            decoration: const InputDecoration(
+                              labelText: 'فیلتر وضعیت',
+                              prefixIcon: Icon(Icons.filter_list),
+                            ),
+                            items: const [
+                              DropdownMenuItem(value: null, child: Text('همه')),
+                              DropdownMenuItem(
+                                  value: 'draft', child: Text('پیش‌نویس')),
+                              DropdownMenuItem(
+                                  value: 'submitted_to_group_manager',
+                                  child: Text('ارسال به مدیر گروه')),
+                              DropdownMenuItem(
+                                  value: 'submitted_to_general_manager',
+                                  child: Text('ارسال به مدیر کل')),
+                              DropdownMenuItem(
+                                  value: 'submitted_to_finance',
+                                  child: Text('ارسال به مالی')),
+                              DropdownMenuItem(
+                                  value: 'approved', child: Text('تایید شده')),
+                            ],
+                            onChanged: (value) =>
+                                controller.setStatusFilter(value),
+                          )),
+                    ),
+
+                    const SizedBox(width: 16),
+
+                    // Clear filters button
+                    ElevatedButton.icon(
+                      onPressed: () {
+                        searchController.clear();
+                        controller.clearFilters();
+                      },
+                      icon: const Icon(Icons.clear),
+                      label: const Text('پاک کردن'),
+                    ),
+                  ],
                 ),
               ],
             ),

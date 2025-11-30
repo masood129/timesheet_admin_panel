@@ -323,6 +323,7 @@ class ApiService {
     int? userId,
     int? year,
     int? month,
+    String? search,
     int page = 1,
     int limit = 20,
   }) async {
@@ -334,6 +335,7 @@ class ApiService {
           if (userId != null) 'userId': userId,
           if (year != null) 'year': year,
           if (month != null) 'month': month,
+          if (search != null) 'search': search,
           'page': page,
           'limit': limit,
         },
