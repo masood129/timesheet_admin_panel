@@ -12,11 +12,17 @@ class UserController extends GetxController {
   final currentPage = 1.obs;
   final searchQuery = ''.obs;
   final selectedRole = Rx<String?>(null);
+  
+  // For edit dialog dropdowns
+  final allGroups = <Group>[].obs;
+  final allAdmins = <User>[].obs;
 
   @override
   void onInit() {
     super.onInit();
     fetchUsers();
+    fetchGroupsForDropdown();
+    fetchAdminsForDropdown();
   }
 
   Future<void> fetchUsers({int page = 1}) async {
@@ -74,9 +80,9 @@ class UserController extends GetxController {
     }
   }
 
-  Future<bool> updateUser(int id, String username) async {
+  Future<bool> updateUser(int id, Map<String, dynamic> data) async {
     try {
-      await _apiService.updateUser(id, {'Username': username});
+      await _apiService.updateUser(id, data);
       showCustomSnackbar('موفق', 'کاربر با موفقیت بروزرسانی شد');
       await fetchUsers();
       return true;
@@ -118,5 +124,26 @@ class UserController extends GetxController {
   void setRoleFilter(String? role) {
     selectedRole.value = role;
     fetchUsers();
+  }
+
+  Future<void> fetchGroupsForDropdown() async {
+    try {
+      final response = await _apiService.getGroups(limit: 1000);
+      allGroups.value =
+          (response['groups'] as List).map((g) => Group.fromJson(g)).toList();
+    } catch (e) {
+      print('Error fetching groups: $e');
+    }
+  }
+
+  Future<void> fetchAdminsForDropdown() async {
+    try {
+      // Fetch all users that can be direct admins (managers)
+      final response = await _apiService.getUsers(limit: 1000);
+      allAdmins.value =
+          (response['users'] as List).map((u) => User.fromJson(u)).toList();
+    } catch (e) {
+      print('Error fetching admins: $e');
+    }
   }
 }
