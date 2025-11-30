@@ -1,7 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:get_storage/get_storage.dart';
-import 'package:logger/logger.dart';
 import '../../core/constants/app_constants.dart';
+import '../../core/utils/api_logger.dart';
 
 class ApiService {
   static final ApiService _instance = ApiService._internal();
@@ -10,7 +10,6 @@ class ApiService {
 
   late Dio _dio;
   final _storage = GetStorage();
-  final _logger = Logger();
 
   void init() {
     _dio = Dio(BaseOptions(
@@ -23,7 +22,7 @@ class ApiService {
       },
     ));
 
-    // Add interceptors
+    // Add auth token interceptor
     _dio.interceptors.add(InterceptorsWrapper(
       onRequest: (options, handler) {
         // Add auth token
@@ -31,19 +30,12 @@ class ApiService {
         if (token != null) {
           options.headers['Authorization'] = 'Bearer $token';
         }
-        _logger.d('REQUEST[${options.method}] => PATH: ${options.path}');
         return handler.next(options);
       },
-      onResponse: (response, handler) {
-        _logger.d('RESPONSE[${response.statusCode}] => DATA: ${response.data}');
-        return handler.next(response);
-      },
-      onError: (error, handler) {
-        _logger.e(
-            'ERROR[${error.response?.statusCode}] => MESSAGE: ${error.message}');
-        return handler.next(error);
-      },
     ));
+
+    // Add logging interceptor
+    _dio.interceptors.add(ApiLoggerInterceptor());
   }
 
   // Public getters for baseUrl and token
