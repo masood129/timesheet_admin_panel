@@ -501,4 +501,37 @@ class ApiService {
       rethrow;
     }
   }
+
+  // Dashboard Settings
+  Future<Map<String, dynamic>> getDashboardSettings() async {
+    try {
+      final response = await _dio.get(
+        '${AppConstants.adminEndpoint}/dashboard-settings',
+      );
+      return response.data;
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  Future<void> saveDashboardSettings(Map<String, dynamic> settings) async {
+    try {
+      await _dio.post(
+        '${AppConstants.adminEndpoint}/dashboard-settings',
+        data: {'settings': settings},
+      );
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  Future<void> resetDashboardSettings() async {
+    try {
+      await _dio.delete(
+        '${AppConstants.adminEndpoint}/dashboard-settings',
+      );
+    } catch (e) {
+      rethrow;
+    }
+  }
 }

@@ -12,6 +12,7 @@ import 'groups_page.dart';
 import 'reports_page.dart';
 import '../month_periods_page.dart';
 import 'logs_page.dart';
+import 'settings_page.dart';
 import '../../controllers/dashboard_controller.dart';
 import '../../controllers/user_controller.dart';
 import '../../controllers/project_controller.dart';
@@ -75,7 +76,7 @@ class _MainLayoutState extends State<MainLayout> {
       const ReportsPage(),
       const MonthPeriodsPage(),
       const LogsPage(),
-      const Center(child: Text('تنظیمات')),
+      const SettingsPage(),
     ];
   }
 

@@ -19,6 +19,7 @@ dependencies:
   
   # Storage
   get_storage: ^2.1.1
+  shared_preferences: ^2.2.2
   
   # UI Components
   flutter_svg: ^2.0.9
