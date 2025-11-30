@@ -25,7 +25,7 @@ class ProjectsPage extends StatelessWidget {
                   flex: 2,
                   child: TextField(
                     decoration: const InputDecoration(
-                      hintText: 'جستجو...',
+                      hintText: 'جستجو بر اساس کد یا نام پروژه...',
                       prefixIcon: Icon(Icons.search),
                     ),
                     onChanged: (value) {
