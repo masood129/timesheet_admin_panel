@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../../controllers/auth_controller.dart';
+import '../../core/utils/page_title_manager.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -13,6 +14,12 @@ class _LoginPageState extends State<LoginPage> {
   final _formKey = GlobalKey<FormState>();
   final _usernameController = TextEditingController();
   final _authController = Get.find<AuthController>();
+
+  @override
+  void initState() {
+    super.initState();
+    PageTitleManager.setTitle('ورود');
+  }
 
   @override
   void dispose() {

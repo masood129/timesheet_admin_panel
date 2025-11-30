@@ -20,6 +20,7 @@ import '../../controllers/group_controller.dart';
 import '../../controllers/report_controller.dart';
 import '../../controllers/month_period_controller.dart';
 import '../../controllers/logs_controller.dart';
+import '../../core/utils/page_title_manager.dart';
 
 class MainLayout extends StatefulWidget {
   const MainLayout({super.key});
@@ -34,6 +35,15 @@ class _MainLayoutState extends State<MainLayout> {
   @override
   void initState() {
     super.initState();
+    
+    // Set initial page title
+    PageTitleManager.setTitle(PageTitleManager.getTitleForPageIndex(0));
+    
+    // Listen to page changes and update title
+    ever(_selectedIndex, (index) {
+      PageTitleManager.setTitle(PageTitleManager.getTitleForPageIndex(index));
+    });
+    
     // Initialize LogsService
     final apiService = ApiService();
     if (!Get.isRegistered<LogsService>()) {
