@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../../controllers/user_controller.dart';
 import '../../data/models/models.dart';
+import 'searchable_dropdown.dart';
 
 class UserDialog extends StatefulWidget {
   final User? user;
@@ -206,12 +207,13 @@ class _UserDialogState extends State<UserDialog> {
                 ],
 
                 // Role
-                DropdownButtonFormField<String>(
+                SearchableDropdown<String>(
                   value: _selectedRole,
                   decoration: const InputDecoration(
                     labelText: 'نقش',
                     prefixIcon: Icon(Icons.admin_panel_settings),
                   ),
+                  searchHint: 'جستجوی نقش...',
                   items: const [
                     DropdownMenuItem(value: 'user', child: Text('کاربر')),
                     DropdownMenuItem(
@@ -233,12 +235,13 @@ class _UserDialogState extends State<UserDialog> {
                   const SizedBox(height: 16),
 
                   // Group
-                  Obx(() => DropdownButtonFormField<int>(
+                  Obx(() => SearchableDropdown<int>(
                         value: _selectedGroupId,
                         decoration: const InputDecoration(
                           labelText: 'گروه',
                           prefixIcon: Icon(Icons.group),
                         ),
+                        searchHint: 'جستجوی گروه...',
                         items: [
                           const DropdownMenuItem(
                             value: null,
@@ -261,12 +264,13 @@ class _UserDialogState extends State<UserDialog> {
                   const SizedBox(height: 16),
 
                   // Direct Admin
-                  Obx(() => DropdownButtonFormField<int>(
+                  Obx(() => SearchableDropdown<int>(
                         value: _selectedDirectAdminId,
                         decoration: const InputDecoration(
                           labelText: 'مدیر مستقیم',
                           prefixIcon: Icon(Icons.supervised_user_circle),
                         ),
+                        searchHint: 'جستجوی مدیر...',
                         items: [
                           const DropdownMenuItem(
                             value: null,

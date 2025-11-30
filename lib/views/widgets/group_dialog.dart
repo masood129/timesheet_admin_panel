@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../../controllers/group_controller.dart';
 import '../../data/models/models.dart';
+import 'searchable_dropdown.dart';
 
 class GroupDialog extends StatefulWidget {
   final Group? group;
@@ -95,12 +96,13 @@ class _GroupDialogState extends State<GroupDialog> {
                 if (controller.potentialManagers.isEmpty) {
                   return const Center(child: CircularProgressIndicator());
                 }
-                return DropdownButtonFormField<int>(
-                  initialValue: _selectedManagerId,
+                return SearchableDropdown<int>(
+                  value: _selectedManagerId,
                   decoration: const InputDecoration(
                     labelText: 'مدیر گروه',
                     prefixIcon: Icon(Icons.person),
                   ),
+                  searchHint: 'جستجوی مدیر...',
                   items: controller.potentialManagers.map((user) {
                     return DropdownMenuItem<int>(
                       value: user.userId,

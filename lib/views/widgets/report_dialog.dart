@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import '../../core/utils/snackbar_utils.dart';
 import '../../controllers/report_controller.dart';
 import '../../data/models/models.dart';
+import 'searchable_dropdown.dart';
 
 class ReportDialog extends StatefulWidget {
   final MonthlyReport report;
@@ -90,12 +91,13 @@ class _ReportDialogState extends State<ReportDialog> {
               const Divider(height: 32),
 
               // Action selector
-              DropdownButtonFormField<String>(
-                initialValue: _selectedAction,
+              SearchableDropdown<String>(
+                value: _selectedAction,
                 decoration: const InputDecoration(
                   labelText: 'عملیات',
                   prefixIcon: Icon(Icons.check_circle),
                 ),
+                searchHint: 'جستجوی عملیات...',
                 items: const [
                   DropdownMenuItem(
                     value: 'approved',

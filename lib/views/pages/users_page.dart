@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import '../../controllers/user_controller.dart';
 import '../../core/theme/app_theme.dart';
 import '../widgets/user_dialog.dart';
+import '../widgets/searchable_dropdown.dart';
 
 class UsersPage extends StatelessWidget {
   const UsersPage({super.key});
@@ -41,12 +42,13 @@ class UsersPage extends StatelessWidget {
 
                 // Role filter
                 Expanded(
-                  child: Obx(() => DropdownButtonFormField<String>(
-                        initialValue: controller.selectedRole.value,
+                  child: Obx(() => SearchableDropdown<String>(
+                        value: controller.selectedRole.value,
                         decoration: const InputDecoration(
                           labelText: 'فیلتر نقش',
                           prefixIcon: Icon(Icons.filter_list),
                         ),
+                        searchHint: 'جستجوی نقش...',
                         items: const [
                           DropdownMenuItem(value: null, child: Text('همه')),
                           DropdownMenuItem(

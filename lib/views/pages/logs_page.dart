@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../../controllers/logs_controller.dart';
 import '../../data/models/log_entry_model.dart';
+import '../widgets/searchable_dropdown.dart';
 
 class LogsPage extends StatelessWidget {
   const LogsPage({super.key});
@@ -109,8 +110,8 @@ class LogsPage extends StatelessWidget {
               // Category Filter
               SizedBox(
                 width: 200,
-                child: DropdownButtonFormField<String>(
-                  initialValue: controller.selectedCategory.value,
+                child: SearchableDropdown<String>(
+                  value: controller.selectedCategory.value,
                   decoration: const InputDecoration(
                     labelText: 'Category',
                     border: OutlineInputBorder(),
@@ -118,6 +119,7 @@ class LogsPage extends StatelessWidget {
                         EdgeInsets.symmetric(horizontal: 12, vertical: 8),
                     isDense: true,
                   ),
+                  searchHint: 'Search category...',
                   items: ['all', ...controller.categories.keys]
                       .map((cat) => DropdownMenuItem(
                             value: cat,
@@ -130,8 +132,8 @@ class LogsPage extends StatelessWidget {
               // Level Filter
               SizedBox(
                 width: 150,
-                child: DropdownButtonFormField<String>(
-                  initialValue: controller.selectedLevel.value,
+                child: SearchableDropdown<String>(
+                  value: controller.selectedLevel.value,
                   decoration: const InputDecoration(
                     labelText: 'Level',
                     border: OutlineInputBorder(),
@@ -139,6 +141,7 @@ class LogsPage extends StatelessWidget {
                         EdgeInsets.symmetric(horizontal: 12, vertical: 8),
                     isDense: true,
                   ),
+                  searchHint: 'Search level...',
                   items: const [
                     DropdownMenuItem(value: 'all', child: Text('All Levels')),
                     DropdownMenuItem(value: 'error', child: Text('Error')),

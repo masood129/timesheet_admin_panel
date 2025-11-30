@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '../controllers/month_period_controller.dart';
 import '../data/models/month_period_model.dart';
+import 'widgets/searchable_dropdown.dart';
 
 class MonthPeriodDialog extends StatefulWidget {
   final MonthPeriodController controller;
@@ -103,9 +104,10 @@ class _MonthPeriodDialogState extends State<MonthPeriodDialog> {
             children: [
               // Month selector (only for create mode)
               if (!isEditMode)
-                DropdownButtonFormField<int>(
-                  initialValue: month,
+                SearchableDropdown<int>(
+                  value: month,
                   decoration: const InputDecoration(labelText: 'ماه'),
+                  searchHint: 'جستجوی ماه...',
                   items: List.generate(
                     12,
                     (index) => DropdownMenuItem(
@@ -139,9 +141,10 @@ class _MonthPeriodDialogState extends State<MonthPeriodDialog> {
               Row(
                 children: [
                   Expanded(
-                    child: DropdownButtonFormField<int>(
-                      initialValue: startYear,
+                    child: SearchableDropdown<int>(
+                      value: startYear,
                       decoration: const InputDecoration(labelText: 'سال'),
+                      searchHint: 'جستجو...',
                       items: List.generate(
                         10,
                         (index) => DropdownMenuItem(
@@ -165,9 +168,10 @@ class _MonthPeriodDialogState extends State<MonthPeriodDialog> {
                   ),
                   const SizedBox(width: 8),
                   Expanded(
-                    child: DropdownButtonFormField<int>(
-                      initialValue: startMonth,
+                    child: SearchableDropdown<int>(
+                      value: startMonth,
                       decoration: const InputDecoration(labelText: 'ماه'),
+                      searchHint: 'جستجو...',
                       items: List.generate(
                         12,
                         (index) => DropdownMenuItem(
@@ -191,9 +195,10 @@ class _MonthPeriodDialogState extends State<MonthPeriodDialog> {
                   ),
                   const SizedBox(width: 8),
                   Expanded(
-                    child: DropdownButtonFormField<int>(
-                      initialValue: startDay,
+                    child: SearchableDropdown<int>(
+                      value: startDay,
                       decoration: const InputDecoration(labelText: 'روز'),
+                      searchHint: 'جستجو...',
                       items: List.generate(
                         _getMonthLength(startYear, startMonth),
                         (index) => DropdownMenuItem(
@@ -226,9 +231,10 @@ class _MonthPeriodDialogState extends State<MonthPeriodDialog> {
               Row(
                 children: [
                   Expanded(
-                    child: DropdownButtonFormField<int>(
-                      initialValue: endYear,
+                    child: SearchableDropdown<int>(
+                      value: endYear,
                       decoration: const InputDecoration(labelText: 'سال'),
+                      searchHint: 'جستجو...',
                       items: List.generate(
                         10,
                         (index) => DropdownMenuItem(
@@ -252,9 +258,10 @@ class _MonthPeriodDialogState extends State<MonthPeriodDialog> {
                   ),
                   const SizedBox(width: 8),
                   Expanded(
-                    child: DropdownButtonFormField<int>(
-                      initialValue: endMonth,
+                    child: SearchableDropdown<int>(
+                      value: endMonth,
                       decoration: const InputDecoration(labelText: 'ماه'),
+                      searchHint: 'جستجو...',
                       items: List.generate(
                         12,
                         (index) => DropdownMenuItem(
@@ -278,9 +285,10 @@ class _MonthPeriodDialogState extends State<MonthPeriodDialog> {
                   ),
                   const SizedBox(width: 8),
                   Expanded(
-                    child: DropdownButtonFormField<int>(
-                      initialValue: endDay,
+                    child: SearchableDropdown<int>(
+                      value: endDay,
                       decoration: const InputDecoration(labelText: 'روز'),
+                      searchHint: 'جستجو...',
                       items: List.generate(
                         _getMonthLength(endYear, endMonth),
                         (index) => DropdownMenuItem(

@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import '../../controllers/report_controller.dart';
 import '../../core/theme/app_theme.dart';
 import '../widgets/report_dialog.dart';
+import '../widgets/searchable_dropdown.dart';
 
 class ReportsPage extends StatelessWidget {
   const ReportsPage({super.key});
@@ -49,12 +50,13 @@ class ReportsPage extends StatelessWidget {
 
                     // Status filter
                     Expanded(
-                      child: Obx(() => DropdownButtonFormField<String>(
+                      child: Obx(() => SearchableDropdown<String>(
                             value: controller.selectedStatus.value,
                             decoration: const InputDecoration(
                               labelText: 'فیلتر وضعیت',
                               prefixIcon: Icon(Icons.filter_list),
                             ),
+                            searchHint: 'جستجوی وضعیت...',
                             items: const [
                               DropdownMenuItem(value: null, child: Text('همه')),
                               DropdownMenuItem(
