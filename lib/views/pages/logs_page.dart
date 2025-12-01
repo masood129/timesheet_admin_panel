@@ -19,11 +19,17 @@ class LogsPage extends StatelessWidget {
         actions: [
           IconButton(
             icon: const Icon(Icons.refresh),
+            iconSize: 22,
+            padding: const EdgeInsets.all(8),
+            constraints: const BoxConstraints(),
             onPressed: controller.refresh,
             tooltip: 'Refresh',
           ),
           IconButton(
             icon: const Icon(Icons.filter_list),
+            iconSize: 22,
+            padding: const EdgeInsets.all(8),
+            constraints: const BoxConstraints(),
             onPressed: () => controller.clearFilters(),
             tooltip: 'Clear Filters',
           ),
@@ -293,7 +299,10 @@ class LogsPage extends StatelessWidget {
           ],
         ),
         trailing: IconButton(
-          icon: const Icon(Icons.info_outline, size: 20),
+          icon: const Icon(Icons.info_outline, size: 18),
+          iconSize: 18,
+          padding: const EdgeInsets.all(8),
+          constraints: const BoxConstraints(),
           onPressed: () => _showLogDetails(context, log),
         ),
       ),
@@ -319,6 +328,9 @@ class LogsPage extends StatelessWidget {
             children: [
               IconButton(
                 icon: const Icon(Icons.chevron_left),
+                iconSize: 22,
+                padding: const EdgeInsets.all(8),
+                constraints: const BoxConstraints(),
                 onPressed: controller.currentPage.value > 1
                     ? controller.previousPage
                     : null,
@@ -331,6 +343,9 @@ class LogsPage extends StatelessWidget {
               const SizedBox(width: 16),
               IconButton(
                 icon: const Icon(Icons.chevron_right),
+                iconSize: 22,
+                padding: const EdgeInsets.all(8),
+                constraints: const BoxConstraints(),
                 onPressed:
                     controller.currentPage.value < controller.totalPages.value
                         ? controller.nextPage

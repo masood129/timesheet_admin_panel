@@ -260,7 +260,10 @@ class SettingsPage extends StatelessWidget {
             ],
             // دکمه ویرایش
             IconButton(
-              icon: const Icon(Icons.edit),
+              icon: const Icon(Icons.edit, size: 20),
+              iconSize: 20,
+              padding: const EdgeInsets.all(8),
+              constraints: const BoxConstraints(),
               onPressed: () => _showEditDialog(context, item, controller),
               tooltip: 'ویرایش',
             ),
@@ -268,8 +271,12 @@ class SettingsPage extends StatelessWidget {
             IconButton(
               icon: Icon(
                 item.isVisible ? Icons.visibility : Icons.visibility_off,
+                size: 20,
                 color: item.isVisible ? AppTheme.primaryColor : Colors.grey,
               ),
+              iconSize: 20,
+              padding: const EdgeInsets.all(8),
+              constraints: const BoxConstraints(),
               onPressed: () => controller.toggleItemVisibility(item.id),
               tooltip: item.isVisible ? 'مخفی کردن' : 'نمایش دادن',
             ),

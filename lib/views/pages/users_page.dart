@@ -184,7 +184,10 @@ class UsersPage extends StatelessWidget {
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     children: [
                                       IconButton(
-                                        icon: const Icon(Icons.edit, size: 20),
+                                        icon: const Icon(Icons.edit, size: 18),
+                                        iconSize: 18,
+                                        padding: const EdgeInsets.all(8),
+                                        constraints: const BoxConstraints(),
                                         onPressed: () => _showUserDialog(
                                           context,
                                           user: user,
@@ -193,7 +196,10 @@ class UsersPage extends StatelessWidget {
                                       ),
                                       IconButton(
                                         icon:
-                                            const Icon(Icons.delete, size: 20),
+                                            const Icon(Icons.delete, size: 18),
+                                        iconSize: 18,
+                                        padding: const EdgeInsets.all(8),
+                                        constraints: const BoxConstraints(),
                                         color: Colors.red,
                                         onPressed: () => _confirmDelete(
                                           context,

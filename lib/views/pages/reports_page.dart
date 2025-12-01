@@ -214,7 +214,10 @@ class ReportsPage extends StatelessWidget {
                                     children: [
                                       IconButton(
                                         icon: const Icon(Icons.visibility,
-                                            size: 20),
+                                            size: 18),
+                                        iconSize: 18,
+                                        padding: const EdgeInsets.all(8),
+                                        constraints: const BoxConstraints(),
                                         onPressed: () => _showReportDialog(
                                           context,
                                           report,
@@ -223,7 +226,10 @@ class ReportsPage extends StatelessWidget {
                                       ),
                                       IconButton(
                                         icon:
-                                            const Icon(Icons.delete, size: 20),
+                                            const Icon(Icons.delete, size: 18),
+                                        iconSize: 18,
+                                        padding: const EdgeInsets.all(8),
+                                        constraints: const BoxConstraints(),
                                         color: Colors.red,
                                         onPressed: () => _confirmDelete(
                                           context,
