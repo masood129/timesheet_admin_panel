@@ -16,6 +16,7 @@ class _ProjectDialogState extends State<ProjectDialog> {
   final _formKey = GlobalKey<FormState>();
   late TextEditingController _projectIdController;
   late TextEditingController _projectNameController;
+  late bool _isActive;
 
   @override
   void initState() {
@@ -26,6 +27,7 @@ class _ProjectDialogState extends State<ProjectDialog> {
     _projectNameController = TextEditingController(
       text: widget.project?.projectName ?? '',
     );
+    _isActive = widget.project?.isActive ?? true;
   }
 
   @override
@@ -45,6 +47,7 @@ class _ProjectDialogState extends State<ProjectDialog> {
         success = await controller.createProject(
           id: int.parse(_projectIdController.text),
           projectName: _projectNameController.text,
+          isActive: _isActive,
         );
       } else {
         // Update existing project
@@ -52,6 +55,7 @@ class _ProjectDialogState extends State<ProjectDialog> {
           widget.project!.id,
           _projectNameController.text,
           newId: int.parse(_projectIdController.text),
+          isActive: _isActive,
         );
       }
 
@@ -111,6 +115,22 @@ class _ProjectDialogState extends State<ProjectDialog> {
               ),
 
               const SizedBox(height: 16),
+
+              // Active/Inactive Status
+              SwitchListTile(
+                title: const Text('وضعیت پروژه'),
+                subtitle: Text(_isActive ? 'فعال' : 'غیرفعال'),
+                value: _isActive,
+                onChanged: (value) {
+                  setState(() {
+                    _isActive = value;
+                  });
+                },
+                secondary: Icon(
+                  _isActive ? Icons.check_circle : Icons.cancel,
+                  color: _isActive ? Colors.green : Colors.grey,
+                ),
+              ),
             ],
           ),
         ),

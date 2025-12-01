@@ -98,11 +98,13 @@ class User {
 class Project {
   final int id;
   final String projectName;
+  final bool isActive;
   final List<User>? users;
 
   Project({
     required this.id,
     required this.projectName,
+    this.isActive = true,
     this.users,
   });
 
@@ -110,6 +112,8 @@ class Project {
     return Project(
       id: json['id'] as int? ?? 0,
       projectName: json['projectName'] as String? ?? '',
+      isActive: json['IsActive'] as bool? ?? 
+                (json['isActive'] as bool? ?? true),
       users: json['Users'] != null
           ? (json['Users'] as List).map((u) => User.fromJson(u)).toList()
           : null,
@@ -120,6 +124,7 @@ class Project {
     return {
       'id': id,
       'projectName': projectName,
+      'IsActive': isActive,
     };
   }
 }

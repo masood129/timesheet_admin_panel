@@ -95,6 +95,14 @@ class ProjectsPage extends StatelessWidget {
                           Expanded(
                             flex: 1,
                             child: Text(
+                              'وضعیت',
+                              style: TextStyle(fontWeight: FontWeight.bold),
+                              textAlign: TextAlign.center,
+                            ),
+                          ),
+                          Expanded(
+                            flex: 1,
+                            child: Text(
                               'عملیات',
                               style: TextStyle(fontWeight: FontWeight.bold),
                               textAlign: TextAlign.center,
@@ -126,6 +134,36 @@ class ProjectsPage extends StatelessWidget {
                                 Expanded(
                                   flex: 3,
                                   child: Text(project.projectName),
+                                ),
+                                Expanded(
+                                  flex: 1,
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Container(
+                                        padding: const EdgeInsets.symmetric(
+                                          horizontal: 8,
+                                          vertical: 4,
+                                        ),
+                                        decoration: BoxDecoration(
+                                          color: project.isActive
+                                              ? Colors.green.shade100
+                                              : Colors.grey.shade300,
+                                          borderRadius: BorderRadius.circular(12),
+                                        ),
+                                        child: Text(
+                                          project.isActive ? 'فعال' : 'غیرفعال',
+                                          style: TextStyle(
+                                            color: project.isActive
+                                                ? Colors.green.shade800
+                                                : Colors.grey.shade700,
+                                            fontSize: 12,
+                                            fontWeight: FontWeight.w500,
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
                                 ),
                                 Expanded(
                                   flex: 1,

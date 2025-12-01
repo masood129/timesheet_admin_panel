@@ -55,11 +55,13 @@ class ProjectController extends GetxController {
   Future<bool> createProject({
     required int id,
     required String projectName,
+    bool isActive = true,
   }) async {
     try {
       await _apiService.createProject({
         'id': id,
         'projectName': projectName,
+        'IsActive': isActive,
       });
       showCustomSnackbar('موفق', 'پروژه با موفقیت ایجاد شد');
       await fetchProjects();
@@ -75,6 +77,7 @@ class ProjectController extends GetxController {
     int id,
     String projectName, {
     int? newId,
+    bool? isActive,
   }) async {
     try {
       final data = <String, dynamic>{
@@ -83,6 +86,10 @@ class ProjectController extends GetxController {
       
       if (newId != null) {
         data['id'] = newId;
+      }
+      
+      if (isActive != null) {
+        data['IsActive'] = isActive;
       }
       
       await _apiService.updateProject(id, data);
