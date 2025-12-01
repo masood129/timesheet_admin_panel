@@ -37,11 +37,9 @@ class LogsController extends GetxController {
       final result = await logsService.getLogCategories();
       categories.value = result;
 
-      // Load logs for first category if available
-      if (result.isNotEmpty) {
-        selectedCategory.value = result.keys.first;
-        await loadLogs();
-      }
+      // Load logs for 'all' categories by default
+      selectedCategory.value = 'all';
+      await loadLogs();
     } catch (e) {
       error.value = 'Failed to load categories: $e';
     } finally {
@@ -55,14 +53,28 @@ class LogsController extends GetxController {
       isLoading.value = true;
       error.value = '';
 
-      final result = await logsService.getLogsByCategory(
-        category: selectedCategory.value,
-        date: selectedDate.value.isNotEmpty ? selectedDate.value : null,
-        level: selectedLevel.value != 'all' ? selectedLevel.value : null,
-        search: searchQuery.value.isNotEmpty ? searchQuery.value : null,
-        page: currentPage.value,
-        limit: 100,
-      );
+      Map<String, dynamic> result;
+
+      // If 'all' is selected, use getAllLogs endpoint
+      if (selectedCategory.value == 'all') {
+        result = await logsService.getAllLogs(
+          level: selectedLevel.value != 'all' ? selectedLevel.value : null,
+          search: searchQuery.value.isNotEmpty ? searchQuery.value : null,
+          startDate: selectedDate.value.isNotEmpty ? selectedDate.value : null,
+          page: currentPage.value,
+          limit: 100,
+        );
+      } else {
+        // Otherwise, use the category-specific endpoint
+        result = await logsService.getLogsByCategory(
+          category: selectedCategory.value,
+          date: selectedDate.value.isNotEmpty ? selectedDate.value : null,
+          level: selectedLevel.value != 'all' ? selectedLevel.value : null,
+          search: searchQuery.value.isNotEmpty ? searchQuery.value : null,
+          page: currentPage.value,
+          limit: 100,
+        );
+      }
 
       logs.value = result['logs'] as List<LogEntryModel>;
       total.value = result['total'];

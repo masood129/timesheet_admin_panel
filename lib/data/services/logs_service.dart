@@ -78,6 +78,58 @@ class LogsService {
     }
   }
 
+  /// Get all logs (across all categories) with optional filters
+  Future<Map<String, dynamic>> getAllLogs({
+    String? level,
+    String? search,
+    String? startDate,
+    String? endDate,
+    int? userId,
+    int page = 1,
+    int limit = 100,
+  }) async {
+    final queryParams = {
+      if (search != null && search.isNotEmpty) 'query': search,
+      if (level != null) 'level': level,
+      if (startDate != null) 'startDate': startDate,
+      if (endDate != null) 'endDate': endDate,
+      if (userId != null) 'userId': userId.toString(),
+      'limit': limit.toString(),
+    };
+
+    final uri = Uri.parse('$baseUrl/admin/logs/search/all')
+        .replace(queryParameters: queryParams);
+
+    final response = await http.get(
+      uri,
+      headers: {
+        'Authorization': 'Bearer $token',
+        'Content-Type': 'application/json',
+      },
+    );
+
+    if (response.statusCode == 200) {
+      final data = json.decode(response.body);
+      final logs = (data['logs'] as List)
+          .map((log) => LogEntryModel.fromJson(log))
+          .toList();
+      final total = data['total'] as int;
+      
+      // Calculate pagination info
+      final totalPages = (total / limit).ceil();
+      
+      return {
+        'logs': logs,
+        'total': total,
+        'page': page,
+        'totalPages': totalPages,
+        'truncated': data['truncated'] ?? false,
+      };
+    } else {
+      throw Exception('Failed to fetch all logs');
+    }
+  }
+
   /// Search across all logs
   Future<Map<String, dynamic>> searchLogs({
     required String query,
