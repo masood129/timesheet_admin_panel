@@ -93,6 +93,14 @@ class ProjectsPage extends StatelessWidget {
                             ),
                           ),
                           Expanded(
+                            flex: 2,
+                            child: Text(
+                              'مدیر مستقیم',
+                              style: TextStyle(fontWeight: FontWeight.bold),
+                              textAlign: TextAlign.center,
+                            ),
+                          ),
+                          Expanded(
                             flex: 1,
                             child: Text(
                               'وضعیت',
@@ -134,6 +142,23 @@ class ProjectsPage extends StatelessWidget {
                                 Expanded(
                                   flex: 3,
                                   child: Text(project.projectName),
+                                ),
+                                Expanded(
+                                  flex: 2,
+                                  child: Text(
+                                    project.directAdminName ?? 
+                                    project.directAdminUsername ?? 
+                                    'تعیین نشده',
+                                    textAlign: TextAlign.center,
+                                    style: TextStyle(
+                                      color: project.directAdminId != null 
+                                          ? null 
+                                          : Colors.grey,
+                                      fontStyle: project.directAdminId != null 
+                                          ? FontStyle.normal 
+                                          : FontStyle.italic,
+                                    ),
+                                  ),
                                 ),
                                 Expanded(
                                   flex: 1,

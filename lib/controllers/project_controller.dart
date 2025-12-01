@@ -56,13 +56,20 @@ class ProjectController extends GetxController {
     required int id,
     required String projectName,
     bool isActive = true,
+    int? directAdminId,
   }) async {
     try {
-      await _apiService.createProject({
+      final data = <String, dynamic>{
         'id': id,
         'projectName': projectName,
         'IsActive': isActive,
-      });
+      };
+      
+      if (directAdminId != null) {
+        data['DirectAdminId'] = directAdminId;
+      }
+      
+      await _apiService.createProject(data);
       showCustomSnackbar('موفق', 'پروژه با موفقیت ایجاد شد');
       await fetchProjects();
       return true;
@@ -78,6 +85,7 @@ class ProjectController extends GetxController {
     String projectName, {
     int? newId,
     bool? isActive,
+    int? directAdminId,
   }) async {
     try {
       final data = <String, dynamic>{
@@ -90,6 +98,13 @@ class ProjectController extends GetxController {
       
       if (isActive != null) {
         data['IsActive'] = isActive;
+      }
+      
+      if (directAdminId != null) {
+        data['DirectAdminId'] = directAdminId;
+      } else {
+        // Allow setting to null explicitly
+        data['DirectAdminId'] = null;
       }
       
       await _apiService.updateProject(id, data);

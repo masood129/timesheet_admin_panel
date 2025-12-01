@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../../controllers/project_controller.dart';
 import '../../data/models/models.dart';
+import '../../data/services/api_service.dart';
 
 class ProjectDialog extends StatefulWidget {
   final Project? project;
@@ -14,9 +15,13 @@ class ProjectDialog extends StatefulWidget {
 
 class _ProjectDialogState extends State<ProjectDialog> {
   final _formKey = GlobalKey<FormState>();
+  final _apiService = ApiService();
   late TextEditingController _projectIdController;
   late TextEditingController _projectNameController;
   late bool _isActive;
+  int? _selectedDirectAdminId;
+  List<User> _users = [];
+  bool _isLoadingUsers = false;
 
   @override
   void initState() {
@@ -28,6 +33,32 @@ class _ProjectDialogState extends State<ProjectDialog> {
       text: widget.project?.projectName ?? '',
     );
     _isActive = widget.project?.isActive ?? true;
+    _selectedDirectAdminId = widget.project?.directAdminId;
+    _loadUsers();
+  }
+
+  Future<void> _loadUsers() async {
+    setState(() {
+      _isLoadingUsers = true;
+    });
+
+    try {
+      final response = await _apiService.getUsers(
+        page: 1,
+        limit: 1000, // Get all users for dropdown
+      );
+      setState(() {
+        _users = (response['users'] as List)
+            .map((u) => User.fromJson(u))
+            .toList();
+      });
+    } catch (e) {
+      // Silently fail - dropdown will just be empty
+    } finally {
+      setState(() {
+        _isLoadingUsers = false;
+      });
+    }
   }
 
   @override
@@ -48,6 +79,7 @@ class _ProjectDialogState extends State<ProjectDialog> {
           id: int.parse(_projectIdController.text),
           projectName: _projectNameController.text,
           isActive: _isActive,
+          directAdminId: _selectedDirectAdminId,
         );
       } else {
         // Update existing project
@@ -56,6 +88,7 @@ class _ProjectDialogState extends State<ProjectDialog> {
           _projectNameController.text,
           newId: int.parse(_projectIdController.text),
           isActive: _isActive,
+          directAdminId: _selectedDirectAdminId,
         );
       }
 
@@ -113,6 +146,43 @@ class _ProjectDialogState extends State<ProjectDialog> {
                   return null;
                 },
               ),
+
+              const SizedBox(height: 16),
+
+              // Direct Admin Selection
+              _isLoadingUsers
+                  ? const Center(child: Padding(
+                      padding: EdgeInsets.all(8.0),
+                      child: CircularProgressIndicator(),
+                    ))
+                  : DropdownButtonFormField<int>(
+                      value: _selectedDirectAdminId,
+                      decoration: const InputDecoration(
+                        labelText: 'مدیر مستقیم',
+                        prefixIcon: Icon(Icons.person),
+                        hintText: 'انتخاب مدیر مستقیم (اختیاری)',
+                      ),
+                      items: [
+                        const DropdownMenuItem<int>(
+                          value: null,
+                          child: Text('تعیین نشده'),
+                        ),
+                        ..._users.map((user) {
+                          return DropdownMenuItem<int>(
+                            value: user.userId,
+                            child: Text(user.fullName),
+                          );
+                        }),
+                      ],
+                      onChanged: (value) {
+                        setState(() {
+                          _selectedDirectAdminId = value;
+                        });
+                      },
+                      validator: (value) {
+                        return null; // Optional field
+                      },
+                    ),
 
               const SizedBox(height: 16),
 
