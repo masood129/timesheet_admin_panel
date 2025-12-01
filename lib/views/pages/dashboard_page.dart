@@ -17,8 +17,7 @@ class DashboardPage extends StatelessWidget {
     return Scaffold(
       backgroundColor: AppTheme.backgroundColor,
       body: Obx(() {
-        if (controller.isLoading.value ||
-            settingsController.isLoading.value) {
+        if (controller.isLoading.value || settingsController.isLoading.value) {
           return const Center(child: CircularProgressIndicator());
         }
 
@@ -150,7 +149,8 @@ class DashboardPage extends StatelessWidget {
                   style: Theme.of(context).textTheme.titleLarge,
                 ),
                 Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
                   decoration: BoxDecoration(
                     color: (item.color ?? Colors.blue).withValues(alpha: 0.1),
                     borderRadius: BorderRadius.circular(20),
@@ -234,10 +234,12 @@ class DashboardPage extends StatelessWidget {
       BarChartData(
         alignment: BarChartAlignment.spaceAround,
         maxY: stats.usersByRole
-            .map((role) => role.count)
-            .reduce((a, b) => a > b ? a : b)
-            .toDouble() * 1.2,
-        barGroups: stats.usersByRole.asMap().entries.map<BarChartGroupData>((entry) {
+                .map((role) => role.count)
+                .reduce((a, b) => a > b ? a : b)
+                .toDouble() *
+            1.2,
+        barGroups:
+            stats.usersByRole.asMap().entries.map<BarChartGroupData>((entry) {
           final index = entry.key;
           final role = entry.value;
           return BarChartGroupData(
@@ -261,7 +263,8 @@ class DashboardPage extends StatelessWidget {
             sideTitles: SideTitles(
               showTitles: true,
               getTitlesWidget: (value, meta) {
-                if (value.toInt() >= stats.usersByRole.length) return const Text('');
+                if (value.toInt() >= stats.usersByRole.length)
+                  return const Text('');
                 final role = stats.usersByRole[value.toInt()];
                 return Padding(
                   padding: const EdgeInsets.only(top: 8),
@@ -285,10 +288,12 @@ class DashboardPage extends StatelessWidget {
               },
             ),
           ),
-          topTitles: const AxisTitles(sideTitles: SideTitles(showTitles: false)),
-          rightTitles: const AxisTitles(sideTitles: SideTitles(showTitles: false)),
+          topTitles:
+              const AxisTitles(sideTitles: SideTitles(showTitles: false)),
+          rightTitles:
+              const AxisTitles(sideTitles: SideTitles(showTitles: false)),
         ),
-        gridData: FlGridData(
+        gridData: const FlGridData(
           show: true,
           drawVerticalLine: false,
           horizontalInterval: 1,
@@ -301,7 +306,7 @@ class DashboardPage extends StatelessWidget {
   Widget _buildLineChart(dynamic stats) {
     return LineChart(
       LineChartData(
-        gridData: FlGridData(
+        gridData: const FlGridData(
           show: true,
           drawVerticalLine: false,
         ),
@@ -310,7 +315,8 @@ class DashboardPage extends StatelessWidget {
             sideTitles: SideTitles(
               showTitles: true,
               getTitlesWidget: (value, meta) {
-                if (value.toInt() >= stats.usersByRole.length) return const Text('');
+                if (value.toInt() >= stats.usersByRole.length)
+                  return const Text('');
                 final role = stats.usersByRole[value.toInt()];
                 return Padding(
                   padding: const EdgeInsets.only(top: 8),
@@ -334,8 +340,10 @@ class DashboardPage extends StatelessWidget {
               },
             ),
           ),
-          topTitles: const AxisTitles(sideTitles: SideTitles(showTitles: false)),
-          rightTitles: const AxisTitles(sideTitles: SideTitles(showTitles: false)),
+          topTitles:
+              const AxisTitles(sideTitles: SideTitles(showTitles: false)),
+          rightTitles:
+              const AxisTitles(sideTitles: SideTitles(showTitles: false)),
         ),
         borderData: FlBorderData(show: false),
         lineBarsData: [
@@ -481,41 +489,53 @@ class DashboardPage extends StatelessWidget {
   }) {
     return Card(
       child: Padding(
-        padding: const EdgeInsets.all(20),
+        padding: const EdgeInsets.all(16),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          mainAxisAlignment: MainAxisAlignment.start,
+          mainAxisSize: MainAxisSize.min,
           children: [
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Icon(icon, color: color, size: 32),
+                Icon(icon, color: color, size: 28),
                 Container(
-                  padding: const EdgeInsets.all(8),
+                  padding: const EdgeInsets.all(6),
                   decoration: BoxDecoration(
                     color: color.withValues(alpha: 0.1),
                     borderRadius: BorderRadius.circular(8),
                   ),
-                  child: Icon(icon, color: color, size: 24),
+                  child: Icon(icon, color: color, size: 20),
                 ),
               ],
             ),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  value,
-                  style: Theme.of(context).textTheme.displaySmall?.copyWith(
-                        color: color,
-                        fontWeight: FontWeight.bold,
-                      ),
-                ),
-                const SizedBox(height: 4),
-                Text(
-                  title,
-                  style: Theme.of(context).textTheme.bodyMedium,
-                ),
-              ],
+            const SizedBox(height: 8),
+            Flexible(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Text(
+                    value,
+                    style: Theme.of(context).textTheme.displaySmall?.copyWith(
+                          color: color,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 24,
+                        ),
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                  const SizedBox(height: 4),
+                  Text(
+                    title,
+                    style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                          fontSize: 12,
+                        ),
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                ],
+              ),
             ),
           ],
         ),
