@@ -41,13 +41,15 @@ class _SearchableDropdownState<T> extends State<SearchableDropdown<T>> {
 
   @override
   void dispose() {
+    _removeOverlay();
     _searchController.dispose();
     _focusNode.dispose();
-    _removeOverlay();
     super.dispose();
   }
 
   void _filterItems() {
+    if (!mounted) return;
+    
     final query = _searchController.text.toLowerCase();
     setState(() {
       if (query.isEmpty) {
@@ -88,6 +90,8 @@ class _SearchableDropdownState<T> extends State<SearchableDropdown<T>> {
   }
 
   void _showOverlay() {
+    if (!mounted) return;
+    
     _overlayEntry = _createOverlayEntry();
     Overlay.of(context).insert(_overlayEntry!);
     setState(() {
@@ -100,9 +104,13 @@ class _SearchableDropdownState<T> extends State<SearchableDropdown<T>> {
     _overlayEntry?.remove();
     _overlayEntry = null;
     _searchController.clear();
-    setState(() {
+    if (mounted) {
+      setState(() {
+        _isOpen = false;
+      });
+    } else {
       _isOpen = false;
-    });
+    }
   }
 
   void _updateOverlay() {
