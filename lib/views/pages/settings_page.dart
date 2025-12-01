@@ -127,7 +127,7 @@ class SettingsPage extends StatelessWidget {
                     children: [
                       Row(
                         children: [
-                          Icon(Icons.info_outline,
+                          const Icon(Icons.info_outline,
                               color: AppTheme.primaryColor),
                           const SizedBox(width: 8),
                           Text(
@@ -192,7 +192,7 @@ class SettingsPage extends StatelessWidget {
         leading: Row(
           mainAxisSize: MainAxisSize.min,
           children: [
-            Icon(
+            const Icon(
               Icons.drag_indicator,
               color: Colors.grey,
             ),
@@ -200,7 +200,8 @@ class SettingsPage extends StatelessWidget {
             Container(
               padding: const EdgeInsets.all(8),
               decoration: BoxDecoration(
-                color: (item.color ?? AppTheme.primaryColor).withValues(alpha: 0.1),
+                color: (item.color ?? AppTheme.primaryColor)
+                    .withValues(alpha: 0.1),
                 borderRadius: BorderRadius.circular(8),
               ),
               child: Icon(
@@ -229,7 +230,8 @@ class SettingsPage extends StatelessWidget {
             // نوع نمودار (اگر نمودار باشد)
             if (item.chartType != null) ...[
               Container(
-                padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
                 decoration: BoxDecoration(
                   color: Colors.blue.shade50,
                   borderRadius: BorderRadius.circular(20),
@@ -245,7 +247,7 @@ class SettingsPage extends StatelessWidget {
                     const SizedBox(width: 4),
                     Text(
                       _getChartTypeLabel(item.chartType!),
-                      style: TextStyle(
+                      style: const TextStyle(
                         fontSize: 12,
                         color: Colors.blue,
                         fontWeight: FontWeight.bold,
@@ -395,4 +397,3 @@ class SettingsPage extends StatelessWidget {
     }
   }
 }
-
