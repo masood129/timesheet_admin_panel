@@ -42,6 +42,13 @@ class MyApp extends StatelessWidget {
       themeMode: ThemeMode.light,
       debugShowCheckedModeBanner: false,
 
+      // Set text direction to RTL for Persian
+      builder: (context, child) {
+        return Directionality(
+          textDirection: TextDirection.rtl,
+          child: child!,
+        );
+      },
       // Initial route based on login status
       home: Obx(() => authController.isLoggedIn.value
           ? const MainLayout()

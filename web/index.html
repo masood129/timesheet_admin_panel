@@ -33,6 +33,20 @@
   <link rel="manifest" href="manifest.json">
 </head>
 <body>
-  <script src="flutter_bootstrap.js" async></script>
-</body>
-</html>
+
+<script>
+  {{flutter_js}}
+  {{flutter_build_config}}
+
+  const searchParams = new URLSearchParams(window.location.search);
+  const renderer = searchParams.get('renderer');
+  const userConfig = {
+  'canvasKitBaseUrl':'/canvaskit/'
+  } ;
+  _flutter.loader.load({
+    config: userConfig,
+  });
+
+</script>
+
+</body></html>
