@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 
 class AppTheme {
   // Colors
@@ -20,8 +19,13 @@ class AppTheme {
   static const Color sidebarHoverColor = Color(0xFF334155);
   static const Color sidebarActiveColor = Color(0xFF3B82F6);
 
+  // Font Families
+  static const String persianFont = 'BNazanin';
+  static const String englishFont = 'Ubuntu';
+
   // Light Theme
   static ThemeData lightTheme = ThemeData(
+    fontFamily: persianFont, // فونت پیش‌فرض فارسی
     useMaterial3: true,
     colorScheme: const ColorScheme.light(
       primary: primaryColor,
@@ -30,12 +34,13 @@ class AppTheme {
       error: errorColor,
     ),
     scaffoldBackgroundColor: backgroundColor,
-    appBarTheme: AppBarTheme(
+    appBarTheme: const AppBarTheme(
       backgroundColor: surfaceColor,
       foregroundColor: textPrimaryColor,
       elevation: 0,
       centerTitle: false,
-      titleTextStyle: GoogleFonts.poppins(
+      titleTextStyle: TextStyle(
+        fontFamily: persianFont,
         fontSize: 20,
         fontWeight: FontWeight.w600,
         color: textPrimaryColor,
@@ -56,7 +61,8 @@ class AppTheme {
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(8),
         ),
-        textStyle: GoogleFonts.poppins(
+        textStyle: const TextStyle(
+          fontFamily: persianFont,
           fontSize: 14,
           fontWeight: FontWeight.w500,
         ),
@@ -70,7 +76,8 @@ class AppTheme {
           borderRadius: BorderRadius.circular(8),
         ),
         side: const BorderSide(color: primaryColor),
-        textStyle: GoogleFonts.poppins(
+        textStyle: const TextStyle(
+          fontFamily: persianFont,
           fontSize: 14,
           fontWeight: FontWeight.w500,
         ),
@@ -80,7 +87,8 @@ class AppTheme {
       style: TextButton.styleFrom(
         foregroundColor: primaryColor,
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-        textStyle: GoogleFonts.poppins(
+        textStyle: const TextStyle(
+          fontFamily: persianFont,
           fontSize: 14,
           fontWeight: FontWeight.w500,
         ),
@@ -106,60 +114,72 @@ class AppTheme {
         borderSide: const BorderSide(color: errorColor),
       ),
       contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-      labelStyle: GoogleFonts.poppins(
+      labelStyle: const TextStyle(
+        fontFamily: persianFont,
         fontSize: 14,
         color: textSecondaryColor,
       ),
-      hintStyle: GoogleFonts.poppins(
+      hintStyle: const TextStyle(
+        fontFamily: persianFont,
         fontSize: 14,
         color: textSecondaryColor,
       ),
     ),
-    textTheme: TextTheme(
-      displayLarge: GoogleFonts.poppins(
+    textTheme: const TextTheme(
+      displayLarge: TextStyle(
+        fontFamily: persianFont,
         fontSize: 32,
         fontWeight: FontWeight.bold,
         color: textPrimaryColor,
       ),
-      displayMedium: GoogleFonts.poppins(
+      displayMedium: TextStyle(
+        fontFamily: persianFont,
         fontSize: 28,
         fontWeight: FontWeight.bold,
         color: textPrimaryColor,
       ),
-      displaySmall: GoogleFonts.poppins(
+      displaySmall: TextStyle(
+        fontFamily: persianFont,
         fontSize: 24,
         fontWeight: FontWeight.w600,
         color: textPrimaryColor,
       ),
-      headlineMedium: GoogleFonts.poppins(
+      headlineMedium: TextStyle(
+        fontFamily: persianFont,
         fontSize: 20,
         fontWeight: FontWeight.w600,
         color: textPrimaryColor,
       ),
-      headlineSmall: GoogleFonts.poppins(
+      headlineSmall: TextStyle(
+        fontFamily: persianFont,
         fontSize: 18,
         fontWeight: FontWeight.w600,
         color: textPrimaryColor,
       ),
-      titleLarge: GoogleFonts.poppins(
+      titleLarge: TextStyle(
+        fontFamily: persianFont,
         fontSize: 16,
         fontWeight: FontWeight.w600,
         color: textPrimaryColor,
       ),
-      titleMedium: GoogleFonts.poppins(
+      titleMedium: TextStyle(
+        fontFamily: persianFont,
         fontSize: 14,
         fontWeight: FontWeight.w500,
         color: textPrimaryColor,
       ),
-      bodyLarge: GoogleFonts.poppins(
+      bodyLarge: TextStyle(
+        fontFamily: persianFont,
         fontSize: 14,
         color: textPrimaryColor,
       ),
-      bodyMedium: GoogleFonts.poppins(
+      bodyMedium: TextStyle(
+        fontFamily: persianFont,
         fontSize: 12,
         color: textPrimaryColor,
       ),
-      bodySmall: GoogleFonts.poppins(
+      bodySmall: TextStyle(
+        fontFamily: persianFont,
         fontSize: 11,
         color: textSecondaryColor,
       ),
@@ -172,6 +192,7 @@ class AppTheme {
 
   // Dark Theme (optional)
   static ThemeData darkTheme = ThemeData(
+    fontFamily: persianFont, // فونت پیش‌فرض فارسی
     useMaterial3: true,
     brightness: Brightness.dark,
     colorScheme: const ColorScheme.dark(
