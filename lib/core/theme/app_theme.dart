@@ -23,6 +23,28 @@ class AppTheme {
   static const String persianFont = 'BNazanin';
   static const String englishFont = 'Ubuntu';
 
+  // Unified Font Configuration - تنظیمات یکپارچه فونت
+  static const double fontSizeDisplayLarge = 36.0;  // بود: 32
+  static const double fontSizeDisplayMedium = 32.0; // بود: 28
+  static const double fontSizeDisplaySmall = 28.0;  // بود: 24
+  static const double fontSizeHeadlineLarge = 24.0; // بود: 20
+  static const double fontSizeHeadlineMedium = 22.0; // بود: 20
+  static const double fontSizeHeadlineSmall = 20.0; // بود: 18
+  static const double fontSizeTitleLarge = 18.0;    // بود: 16
+  static const double fontSizeTitleMedium = 17.0;   // بود: 14
+  static const double fontSizeTitleSmall = 16.0;    // بود: 14
+  static const double fontSizeBodyLarge = 17.0;     // بود: 14
+  static const double fontSizeBodyMedium = 16.0;   // بود: 12
+  static const double fontSizeBodySmall = 14.0;     // بود: 11
+  static const double fontSizeLabelLarge = 16.0;
+  static const double fontSizeLabelMedium = 15.0;
+  static const double fontSizeLabelSmall = 14.0;
+  
+  // Font Weights - وزن فونت‌ها (پررنگ‌تر)
+  static const FontWeight fontWeightNormal = FontWeight.w600;    // بود: normal/w400
+  static const FontWeight fontWeightMedium = FontWeight.w600;   // بود: w500
+  static const FontWeight fontWeightBold = FontWeight.bold;    // بود: w600
+
   // Light Theme
   static ThemeData lightTheme = ThemeData(
     fontFamily: persianFont, // فونت پیش‌فرض فارسی
@@ -41,8 +63,8 @@ class AppTheme {
       centerTitle: false,
       titleTextStyle: TextStyle(
         fontFamily: persianFont,
-        fontSize: 20,
-        fontWeight: FontWeight.w600,
+        fontSize: fontSizeHeadlineLarge,
+        fontWeight: fontWeightBold,
         color: textPrimaryColor,
       ),
     ),
@@ -63,8 +85,8 @@ class AppTheme {
         ),
         textStyle: const TextStyle(
           fontFamily: persianFont,
-          fontSize: 14,
-          fontWeight: FontWeight.w500,
+          fontSize: fontSizeBodyLarge,
+          fontWeight: fontWeightMedium,
         ),
       ),
     ),
@@ -78,8 +100,8 @@ class AppTheme {
         side: const BorderSide(color: primaryColor),
         textStyle: const TextStyle(
           fontFamily: persianFont,
-          fontSize: 14,
-          fontWeight: FontWeight.w500,
+          fontSize: fontSizeBodyLarge,
+          fontWeight: fontWeightMedium,
         ),
       ),
     ),
@@ -89,8 +111,8 @@ class AppTheme {
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
         textStyle: const TextStyle(
           fontFamily: persianFont,
-          fontSize: 14,
-          fontWeight: FontWeight.w500,
+          fontSize: fontSizeBodyLarge,
+          fontWeight: fontWeightMedium,
         ),
       ),
     ),
@@ -116,71 +138,106 @@ class AppTheme {
       contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
       labelStyle: const TextStyle(
         fontFamily: persianFont,
-        fontSize: 14,
+        fontSize: fontSizeBodyLarge,
+        fontWeight: fontWeightNormal,
         color: textSecondaryColor,
       ),
       hintStyle: const TextStyle(
         fontFamily: persianFont,
-        fontSize: 14,
+        fontSize: fontSizeBodyLarge,
+        fontWeight: fontWeightNormal,
         color: textSecondaryColor,
       ),
     ),
     textTheme: const TextTheme(
       displayLarge: TextStyle(
         fontFamily: persianFont,
-        fontSize: 32,
-        fontWeight: FontWeight.bold,
+        fontSize: fontSizeDisplayLarge,
+        fontWeight: fontWeightBold,
         color: textPrimaryColor,
       ),
       displayMedium: TextStyle(
         fontFamily: persianFont,
-        fontSize: 28,
-        fontWeight: FontWeight.bold,
+        fontSize: fontSizeDisplayMedium,
+        fontWeight: fontWeightBold,
         color: textPrimaryColor,
       ),
       displaySmall: TextStyle(
         fontFamily: persianFont,
-        fontSize: 24,
-        fontWeight: FontWeight.w600,
+        fontSize: fontSizeDisplaySmall,
+        fontWeight: fontWeightBold,
+        color: textPrimaryColor,
+      ),
+      headlineLarge: TextStyle(
+        fontFamily: persianFont,
+        fontSize: fontSizeHeadlineLarge,
+        fontWeight: fontWeightBold,
         color: textPrimaryColor,
       ),
       headlineMedium: TextStyle(
         fontFamily: persianFont,
-        fontSize: 20,
-        fontWeight: FontWeight.w600,
+        fontSize: fontSizeHeadlineMedium,
+        fontWeight: fontWeightBold,
         color: textPrimaryColor,
       ),
       headlineSmall: TextStyle(
         fontFamily: persianFont,
-        fontSize: 18,
-        fontWeight: FontWeight.w600,
+        fontSize: fontSizeHeadlineSmall,
+        fontWeight: fontWeightBold,
         color: textPrimaryColor,
       ),
       titleLarge: TextStyle(
         fontFamily: persianFont,
-        fontSize: 16,
-        fontWeight: FontWeight.w600,
+        fontSize: fontSizeTitleLarge,
+        fontWeight: fontWeightBold,
         color: textPrimaryColor,
       ),
       titleMedium: TextStyle(
         fontFamily: persianFont,
-        fontSize: 14,
-        fontWeight: FontWeight.w500,
+        fontSize: fontSizeTitleMedium,
+        fontWeight: fontWeightMedium,
+        color: textPrimaryColor,
+      ),
+      titleSmall: TextStyle(
+        fontFamily: persianFont,
+        fontSize: fontSizeTitleSmall,
+        fontWeight: fontWeightMedium,
         color: textPrimaryColor,
       ),
       bodyLarge: TextStyle(
         fontFamily: persianFont,
-        fontSize: 14,
+        fontSize: fontSizeBodyLarge,
+        fontWeight: fontWeightNormal,
         color: textPrimaryColor,
       ),
       bodyMedium: TextStyle(
         fontFamily: persianFont,
-        fontSize: 12,
+        fontSize: fontSizeBodyMedium,
+        fontWeight: fontWeightNormal,
         color: textPrimaryColor,
       ),
       bodySmall: TextStyle(
         fontFamily: persianFont,
-        fontSize: 11,
+        fontSize: fontSizeBodySmall,
+        fontWeight: fontWeightNormal,
+        color: textSecondaryColor,
+      ),
+      labelLarge: TextStyle(
+        fontFamily: persianFont,
+        fontSize: fontSizeLabelLarge,
+        fontWeight: fontWeightMedium,
+        color: textPrimaryColor,
+      ),
+      labelMedium: TextStyle(
+        fontFamily: persianFont,
+        fontSize: fontSizeLabelMedium,
+        fontWeight: fontWeightNormal,
+        color: textPrimaryColor,
+      ),
+      labelSmall: TextStyle(
+        fontFamily: persianFont,
+        fontSize: fontSizeLabelSmall,
+        fontWeight: fontWeightNormal,
         color: textSecondaryColor,
       ),
     ),
