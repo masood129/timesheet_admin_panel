@@ -11,6 +11,8 @@ class AuthController extends GetxController {
   final isLoading = false.obs;
   final isLoggedIn = false.obs;
   final username = ''.obs;
+  final firstName = ''.obs;
+  final lastName = ''.obs;
   final userId = 0.obs;
   final role = ''.obs;
 
@@ -25,6 +27,8 @@ class AuthController extends GetxController {
     if (token != null) {
       isLoggedIn.value = true;
       username.value = _storage.read(AppConstants.usernameKey) ?? '';
+      firstName.value = _storage.read('firstName') ?? '';
+      lastName.value = _storage.read('lastName') ?? '';
       userId.value = _storage.read(AppConstants.userIdKey) ?? 0;
       role.value = _storage.read(AppConstants.roleKey) ?? '';
     }
@@ -40,6 +44,8 @@ class AuthController extends GetxController {
       await _storage.write(AppConstants.usernameKey, response['Username']);
       await _storage.write(AppConstants.userIdKey, response['userId']);
       await _storage.write(AppConstants.roleKey, response['Role']);
+      await _storage.write('firstName', response['farsifirstname'] ?? '');
+      await _storage.write('lastName', response['farsilastname'] ?? '');
 
       // Check if user is admin
       if (response['Role'] != 'admin') {
@@ -50,6 +56,8 @@ class AuthController extends GetxController {
 
       // Update state
       username.value = response['Username'];
+      firstName.value = response['farsifirstname'] ?? '';
+      lastName.value = response['farsilastname'] ?? '';
       userId.value = response['userId'];
       role.value = response['Role'];
       isLoggedIn.value = true;
@@ -71,9 +79,13 @@ class AuthController extends GetxController {
     await _storage.remove(AppConstants.usernameKey);
     await _storage.remove(AppConstants.userIdKey);
     await _storage.remove(AppConstants.roleKey);
+    await _storage.remove('firstName');
+    await _storage.remove('lastName');
 
     isLoggedIn.value = false;
     username.value = '';
+    firstName.value = '';
+    lastName.value = '';
     userId.value = 0;
     role.value = '';
 

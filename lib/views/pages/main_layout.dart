@@ -141,7 +141,10 @@ class _MainLayoutState extends State<MainLayout> {
                                 crossAxisAlignment: CrossAxisAlignment.end,
                                 children: [
                                   Text(
-                                    authController.username.value,
+                                    authController.firstName.value.isNotEmpty ||
+                                            authController.lastName.value.isNotEmpty
+                                        ? '${authController.firstName.value} ${authController.lastName.value}'.trim()
+                                        : authController.username.value,
                                     style:
                                         Theme.of(context).textTheme.titleMedium,
                                   ),
