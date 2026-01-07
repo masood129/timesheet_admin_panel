@@ -2,6 +2,7 @@ import 'package:get/get.dart';
 import '../core/utils/snackbar_utils.dart';
 import '../data/models/models.dart';
 import '../data/services/api_service.dart';
+import 'user_controller.dart';
 
 class GroupController extends GetxController {
   final ApiService _apiService = ApiService();
@@ -77,6 +78,13 @@ class GroupController extends GetxController {
       });
       showCustomSnackbar('موفق', 'گروه با موفقیت ایجاد شد');
       await fetchGroups();
+      // Refresh UserController's groups dropdown if it exists
+      try {
+        final userController = Get.find<UserController>();
+        await userController.fetchGroupsForDropdown();
+      } catch (e) {
+        // UserController might not be initialized, ignore
+      }
       return true;
     } catch (e) {
       showCustomSnackbar('خطا', 'ایجاد گروه ناموفق بود: ${e.toString()}',
@@ -97,6 +105,13 @@ class GroupController extends GetxController {
       });
       showCustomSnackbar('موفق', 'گروه با موفقیت بروزرسانی شد');
       await fetchGroups();
+      // Refresh UserController's groups dropdown if it exists
+      try {
+        final userController = Get.find<UserController>();
+        await userController.fetchGroupsForDropdown();
+      } catch (e) {
+        // UserController might not be initialized, ignore
+      }
       return true;
     } catch (e) {
       showCustomSnackbar('خطا', 'بروزرسانی گروه ناموفق بود', isError: true);
@@ -109,6 +124,13 @@ class GroupController extends GetxController {
       await _apiService.deleteGroup(id);
       showCustomSnackbar('موفق', 'گروه با موفقیت حذف شد');
       await fetchGroups();
+      // Refresh UserController's groups dropdown if it exists
+      try {
+        final userController = Get.find<UserController>();
+        await userController.fetchGroupsForDropdown();
+      } catch (e) {
+        // UserController might not be initialized, ignore
+      }
       return true;
     } catch (e) {
       showCustomSnackbar('خطا', 'حذف گروه ناموفق بود', isError: true);

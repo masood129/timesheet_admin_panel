@@ -2,6 +2,7 @@ import 'package:get/get.dart';
 import '../core/utils/snackbar_utils.dart';
 import '../data/models/models.dart';
 import '../data/services/api_service.dart';
+import 'group_controller.dart';
 
 class UserController extends GetxController {
   final ApiService _apiService = ApiService();
@@ -72,6 +73,15 @@ class UserController extends GetxController {
       });
       showCustomSnackbar('موفق', 'کاربر با موفقیت ایجاد شد');
       await fetchUsers();
+      // Refresh dropdown lists that contain users
+      await fetchAdminsForDropdown();
+      // Also refresh GroupController's potential managers if it exists
+      try {
+        final groupController = Get.find<GroupController>();
+        await groupController.fetchPotentialManagers();
+      } catch (e) {
+        // GroupController might not be initialized, ignore
+      }
       return true;
     } catch (e) {
       showCustomSnackbar('خطا', 'ایجاد کاربر ناموفق بود: ${e.toString()}',
@@ -85,6 +95,15 @@ class UserController extends GetxController {
       await _apiService.updateUser(id, data);
       showCustomSnackbar('موفق', 'کاربر با موفقیت بروزرسانی شد');
       await fetchUsers();
+      // Refresh dropdown lists that contain users
+      await fetchAdminsForDropdown();
+      // Also refresh GroupController's potential managers if it exists
+      try {
+        final groupController = Get.find<GroupController>();
+        await groupController.fetchPotentialManagers();
+      } catch (e) {
+        // GroupController might not be initialized, ignore
+      }
       return true;
     } catch (e) {
       showCustomSnackbar('خطا', 'بروزرسانی کاربر ناموفق بود', isError: true);
@@ -97,6 +116,15 @@ class UserController extends GetxController {
       await _apiService.deleteUser(id);
       showCustomSnackbar('موفق', 'کاربر با موفقیت حذف شد');
       await fetchUsers();
+      // Refresh dropdown lists that contain users
+      await fetchAdminsForDropdown();
+      // Also refresh GroupController's potential managers if it exists
+      try {
+        final groupController = Get.find<GroupController>();
+        await groupController.fetchPotentialManagers();
+      } catch (e) {
+        // GroupController might not be initialized, ignore
+      }
       return true;
     } catch (e) {
       showCustomSnackbar('خطا', 'حذف کاربر ناموفق بود', isError: true);
