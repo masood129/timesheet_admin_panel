@@ -54,20 +54,27 @@ class ProjectController extends GetxController {
 
   Future<bool> createProject({
     required int id,
-    required String projectName,
+    String? projectName,
     bool isActive = true,
-    int? directAdminId,
+    int? financeCenterCost,
+    String? baseCenterCost,
+    String? bLine,
+    String? systemType,
+    String? contractType,
+    String? centerType,
   }) async {
     try {
       final data = <String, dynamic>{
         'id': id,
         'projectName': projectName,
         'IsActive': isActive,
+        'FinanceCenterCost': financeCenterCost,
+        'BaseCenterCost': baseCenterCost,
+        'BLine': bLine,
+        'SystemType': systemType,
+        'ContractType': contractType,
+        'CenterType': centerType,
       };
-      
-      if (directAdminId != null) {
-        data['DirectAdminId'] = directAdminId;
-      }
       
       await _apiService.createProject(data);
       showCustomSnackbar('موفق', 'پروژه با موفقیت ایجاد شد');
@@ -81,30 +88,54 @@ class ProjectController extends GetxController {
   }
 
   Future<bool> updateProject(
-    int id,
-    String projectName, {
+    int id, {
     int? newId,
+    String? projectName,
     bool? isActive,
-    int? directAdminId,
+    int? financeCenterCost,
+    String? baseCenterCost,
+    String? bLine,
+    String? systemType,
+    String? contractType,
+    String? centerType,
   }) async {
     try {
-      final data = <String, dynamic>{
-        'projectName': projectName,
-      };
+      final data = <String, dynamic>{};
       
       if (newId != null) {
         data['id'] = newId;
+      }
+      
+      if (projectName != null) {
+        data['projectName'] = projectName;
       }
       
       if (isActive != null) {
         data['IsActive'] = isActive;
       }
       
-      if (directAdminId != null) {
-        data['DirectAdminId'] = directAdminId;
-      } else {
-        // Allow setting to null explicitly
-        data['DirectAdminId'] = null;
+      if (financeCenterCost != null) {
+        data['FinanceCenterCost'] = financeCenterCost;
+      }
+      
+      if (baseCenterCost != null) {
+        data['BaseCenterCost'] = baseCenterCost;
+      }
+      
+      if (bLine != null) {
+        data['BLine'] = bLine;
+      }
+      
+      if (systemType != null) {
+        data['SystemType'] = systemType;
+      }
+      
+      if (contractType != null) {
+        data['ContractType'] = contractType;
+      }
+      
+      if (centerType != null) {
+        data['CenterType'] = centerType;
       }
       
       await _apiService.updateProject(id, data);

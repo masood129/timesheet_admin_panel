@@ -15,13 +15,15 @@ class ProjectDialog extends StatefulWidget {
 
 class _ProjectDialogState extends State<ProjectDialog> {
   final _formKey = GlobalKey<FormState>();
-  final _apiService = ApiService();
   late TextEditingController _projectIdController;
   late TextEditingController _projectNameController;
+  late TextEditingController _financeCenterCostController;
+  late TextEditingController _baseCenterCostController;
+  late TextEditingController _bLineController;
+  late TextEditingController _systemTypeController;
+  late TextEditingController _contractTypeController;
+  late TextEditingController _centerTypeController;
   late bool _isActive;
-  int? _selectedDirectAdminId;
-  List<User> _users = [];
-  bool _isLoadingUsers = false;
 
   @override
   void initState() {
@@ -32,39 +34,37 @@ class _ProjectDialogState extends State<ProjectDialog> {
     _projectNameController = TextEditingController(
       text: widget.project?.projectName ?? '',
     );
+    _financeCenterCostController = TextEditingController(
+      text: widget.project?.financeCenterCost?.toString() ?? '',
+    );
+    _baseCenterCostController = TextEditingController(
+      text: widget.project?.baseCenterCost ?? '',
+    );
+    _bLineController = TextEditingController(
+      text: widget.project?.bLine ?? '',
+    );
+    _systemTypeController = TextEditingController(
+      text: widget.project?.systemType ?? '',
+    );
+    _contractTypeController = TextEditingController(
+      text: widget.project?.contractType ?? '',
+    );
+    _centerTypeController = TextEditingController(
+      text: widget.project?.centerType ?? '',
+    );
     _isActive = widget.project?.isActive ?? true;
-    _selectedDirectAdminId = widget.project?.directAdminId;
-    _loadUsers();
-  }
-
-  Future<void> _loadUsers() async {
-    setState(() {
-      _isLoadingUsers = true;
-    });
-
-    try {
-      final response = await _apiService.getUsers(
-        page: 1,
-        limit: 1000, // Get all users for dropdown
-      );
-      setState(() {
-        _users = (response['users'] as List)
-            .map((u) => User.fromJson(u))
-            .toList();
-      });
-    } catch (e) {
-      // Silently fail - dropdown will just be empty
-    } finally {
-      setState(() {
-        _isLoadingUsers = false;
-      });
-    }
   }
 
   @override
   void dispose() {
     _projectIdController.dispose();
     _projectNameController.dispose();
+    _financeCenterCostController.dispose();
+    _baseCenterCostController.dispose();
+    _bLineController.dispose();
+    _systemTypeController.dispose();
+    _contractTypeController.dispose();
+    _centerTypeController.dispose();
     super.dispose();
   }
 
@@ -73,22 +73,60 @@ class _ProjectDialogState extends State<ProjectDialog> {
       final controller = Get.find<ProjectController>();
       bool success;
 
+      final financeCenterCost = _financeCenterCostController.text.isEmpty
+          ? null
+          : int.tryParse(_financeCenterCostController.text);
+
       if (widget.project == null) {
         // Create new project
         success = await controller.createProject(
           id: int.parse(_projectIdController.text),
-          projectName: _projectNameController.text,
+          projectName: _projectNameController.text.isEmpty 
+              ? null 
+              : _projectNameController.text,
           isActive: _isActive,
-          directAdminId: _selectedDirectAdminId,
+          financeCenterCost: financeCenterCost,
+          baseCenterCost: _baseCenterCostController.text.isEmpty 
+              ? null 
+              : _baseCenterCostController.text,
+          bLine: _bLineController.text.isEmpty 
+              ? null 
+              : _bLineController.text,
+          systemType: _systemTypeController.text.isEmpty 
+              ? null 
+              : _systemTypeController.text,
+          contractType: _contractTypeController.text.isEmpty 
+              ? null 
+              : _contractTypeController.text,
+          centerType: _centerTypeController.text.isEmpty 
+              ? null 
+              : _centerTypeController.text,
         );
       } else {
         // Update existing project
         success = await controller.updateProject(
           widget.project!.id,
-          _projectNameController.text,
           newId: int.parse(_projectIdController.text),
+          projectName: _projectNameController.text.isEmpty 
+              ? null 
+              : _projectNameController.text,
           isActive: _isActive,
-          directAdminId: _selectedDirectAdminId,
+          financeCenterCost: financeCenterCost,
+          baseCenterCost: _baseCenterCostController.text.isEmpty 
+              ? null 
+              : _baseCenterCostController.text,
+          bLine: _bLineController.text.isEmpty 
+              ? null 
+              : _bLineController.text,
+          systemType: _systemTypeController.text.isEmpty 
+              ? null 
+              : _systemTypeController.text,
+          contractType: _contractTypeController.text.isEmpty 
+              ? null 
+              : _contractTypeController.text,
+          centerType: _centerTypeController.text.isEmpty 
+              ? null 
+              : _centerTypeController.text,
         );
       }
 
@@ -107,101 +145,140 @@ class _ProjectDialogState extends State<ProjectDialog> {
       content: Form(
         key: _formKey,
         child: SizedBox(
-          width: 400,
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              // Project ID
-              TextFormField(
-                controller: _projectIdController,
-                decoration: const InputDecoration(
-                  labelText: 'کد پروژه',
-                  prefixIcon: Icon(Icons.tag),
+          width: 500,
+          child: SingleChildScrollView(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                // Project ID
+                TextFormField(
+                  controller: _projectIdController,
+                  decoration: const InputDecoration(
+                    labelText: 'کد پروژه *',
+                    prefixIcon: Icon(Icons.tag),
+                  ),
+                  keyboardType: TextInputType.number,
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'کد پروژه الزامی است';
+                    }
+                    if (int.tryParse(value) == null) {
+                      return 'کد باید عدد باشد';
+                    }
+                    return null;
+                  },
                 ),
-                keyboardType: TextInputType.number,
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'کد پروژه الزامی است';
-                  }
-                  if (int.tryParse(value) == null) {
-                    return 'کد باید عدد باشد';
-                  }
-                  return null;
-                },
-              ),
 
-              const SizedBox(height: 16),
+                const SizedBox(height: 16),
 
-              // Project Name
-              TextFormField(
-                controller: _projectNameController,
-                decoration: const InputDecoration(
-                  labelText: 'نام پروژه',
-                  prefixIcon: Icon(Icons.work),
+                // Project Name
+                TextFormField(
+                  controller: _projectNameController,
+                  decoration: const InputDecoration(
+                    labelText: 'نام پروژه',
+                    prefixIcon: Icon(Icons.work),
+                  ),
                 ),
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'نام پروژه الزامی است';
-                  }
-                  return null;
-                },
-              ),
 
-              const SizedBox(height: 16),
+                const SizedBox(height: 16),
 
-              // Direct Admin Selection
-              _isLoadingUsers
-                  ? const Center(child: Padding(
-                      padding: EdgeInsets.all(8.0),
-                      child: CircularProgressIndicator(),
-                    ))
-                  : DropdownButtonFormField<int>(
-                      value: _selectedDirectAdminId,
-                      decoration: const InputDecoration(
-                        labelText: 'مدیر مستقیم',
-                        prefixIcon: Icon(Icons.person),
-                        hintText: 'انتخاب مدیر مستقیم (اختیاری)',
-                      ),
-                      items: [
-                        const DropdownMenuItem<int>(
-                          value: null,
-                          child: Text('تعیین نشده'),
-                        ),
-                        ..._users.map((user) {
-                          return DropdownMenuItem<int>(
-                            value: user.userId,
-                            child: Text(user.fullName),
-                          );
-                        }),
-                      ],
-                      onChanged: (value) {
-                        setState(() {
-                          _selectedDirectAdminId = value;
-                        });
-                      },
-                      validator: (value) {
-                        return null; // Optional field
-                      },
-                    ),
-
-              const SizedBox(height: 16),
-
-              // Active/Inactive Status
-              SwitchListTile(
-                title: const Text('وضعیت پروژه'),
-                subtitle: Text(_isActive ? 'فعال' : 'غیرفعال'),
-                value: _isActive,
-                onChanged: (value) {
-                  setState(() {
-                    _isActive = value;
-                  });
-                },
-                secondary: Icon(
-                  _isActive ? Icons.check_circle : Icons.cancel,
-                  color: _isActive ? Colors.green : Colors.grey,
+                // Finance Center Cost
+                TextFormField(
+                  controller: _financeCenterCostController,
+                  decoration: const InputDecoration(
+                    labelText: 'هزینه مرکز مالی',
+                    prefixIcon: Icon(Icons.attach_money),
+                  ),
+                  keyboardType: TextInputType.number,
+                  validator: (value) {
+                    if (value != null && value.isNotEmpty) {
+                      if (int.tryParse(value) == null) {
+                        return 'مقدار باید عدد باشد';
+                      }
+                    }
+                    return null;
+                  },
                 ),
-              ),
-            ],
+
+                const SizedBox(height: 16),
+
+                // Base Center Cost
+                TextFormField(
+                  controller: _baseCenterCostController,
+                  decoration: const InputDecoration(
+                    labelText: 'هزینه مرکز پایه',
+                    prefixIcon: Icon(Icons.account_balance),
+                  ),
+                  maxLength: 50,
+                ),
+
+                const SizedBox(height: 16),
+
+                // BLine
+                TextFormField(
+                  controller: _bLineController,
+                  decoration: const InputDecoration(
+                    labelText: 'BLine',
+                    prefixIcon: Icon(Icons.linear_scale),
+                  ),
+                  maxLength: 50,
+                ),
+
+                const SizedBox(height: 16),
+
+                // System Type
+                TextFormField(
+                  controller: _systemTypeController,
+                  decoration: const InputDecoration(
+                    labelText: 'نوع سیستم',
+                    prefixIcon: Icon(Icons.computer),
+                  ),
+                  maxLength: 50,
+                ),
+
+                const SizedBox(height: 16),
+
+                // Contract Type
+                TextFormField(
+                  controller: _contractTypeController,
+                  decoration: const InputDecoration(
+                    labelText: 'نوع قرارداد',
+                    prefixIcon: Icon(Icons.description),
+                  ),
+                  maxLength: 50,
+                ),
+
+                const SizedBox(height: 16),
+
+                // Center Type
+                TextFormField(
+                  controller: _centerTypeController,
+                  decoration: const InputDecoration(
+                    labelText: 'نوع مرکز',
+                    prefixIcon: Icon(Icons.location_city),
+                  ),
+                  maxLength: 50,
+                ),
+
+                const SizedBox(height: 16),
+
+                // Active/Inactive Status
+                SwitchListTile(
+                  title: const Text('وضعیت پروژه'),
+                  subtitle: Text(_isActive ? 'فعال' : 'غیرفعال'),
+                  value: _isActive,
+                  onChanged: (value) {
+                    setState(() {
+                      _isActive = value;
+                    });
+                  },
+                  secondary: Icon(
+                    _isActive ? Icons.check_circle : Icons.cancel,
+                    color: _isActive ? Colors.green : Colors.grey,
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
       ),

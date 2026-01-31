@@ -86,7 +86,7 @@ class ProjectsPage extends StatelessWidget {
                             ),
                           ),
                           Expanded(
-                            flex: 3,
+                            flex: 2,
                             child: Text(
                               'نام پروژه',
                               style: TextStyle(fontWeight: FontWeight.bold),
@@ -95,7 +95,15 @@ class ProjectsPage extends StatelessWidget {
                           Expanded(
                             flex: 2,
                             child: Text(
-                              'مدیر مستقیم',
+                              'نوع سیستم',
+                              style: TextStyle(fontWeight: FontWeight.bold),
+                              textAlign: TextAlign.center,
+                            ),
+                          ),
+                          Expanded(
+                            flex: 2,
+                            child: Text(
+                              'نوع مرکز',
                               style: TextStyle(fontWeight: FontWeight.bold),
                               textAlign: TextAlign.center,
                             ),
@@ -140,23 +148,37 @@ class ProjectsPage extends StatelessWidget {
                                   child: Text(project.id.toString()),
                                 ),
                                 Expanded(
-                                  flex: 3,
-                                  child: Text(project.projectName),
+                                  flex: 2,
+                                  child: Text(
+                                    project.projectName ?? '-',
+                                    style: TextStyle(
+                                      color: project.projectName != null 
+                                          ? null 
+                                          : Colors.grey,
+                                    ),
+                                  ),
                                 ),
                                 Expanded(
                                   flex: 2,
                                   child: Text(
-                                    project.directAdminName ?? 
-                                    project.directAdminUsername ?? 
-                                    'تعیین نشده',
+                                    project.systemType ?? '-',
                                     textAlign: TextAlign.center,
                                     style: TextStyle(
-                                      color: project.directAdminId != null 
+                                      color: project.systemType != null 
                                           ? null 
                                           : Colors.grey,
-                                      fontStyle: project.directAdminId != null 
-                                          ? FontStyle.normal 
-                                          : FontStyle.italic,
+                                    ),
+                                  ),
+                                ),
+                                Expanded(
+                                  flex: 2,
+                                  child: Text(
+                                    project.centerType ?? '-',
+                                    textAlign: TextAlign.center,
+                                    style: TextStyle(
+                                      color: project.centerType != null 
+                                          ? null 
+                                          : Colors.grey,
                                     ),
                                   ),
                                 ),
@@ -216,7 +238,7 @@ class ProjectsPage extends StatelessWidget {
                                         onPressed: () => _confirmDelete(
                                           context,
                                           project.id,
-                                          project.projectName,
+                                          project.projectName ?? 'این پروژه',
                                         ),
                                         tooltip: 'حذف',
                                       ),

@@ -97,45 +97,41 @@ class User {
 
 class Project {
   final int id;
-  final String projectName;
+  final String? projectName;
   final bool isActive;
-  final int? directAdminId;
-  final String? directAdminName;
-  final String? directAdminUsername;
+  final int? financeCenterCost;
+  final String? baseCenterCost;
+  final String? bLine;
+  final String? systemType;
+  final String? contractType;
+  final String? centerType;
   final List<User>? users;
 
   Project({
     required this.id,
-    required this.projectName,
+    this.projectName,
     this.isActive = true,
-    this.directAdminId,
-    this.directAdminName,
-    this.directAdminUsername,
+    this.financeCenterCost,
+    this.baseCenterCost,
+    this.bLine,
+    this.systemType,
+    this.contractType,
+    this.centerType,
     this.users,
   });
 
   factory Project.fromJson(Map<String, dynamic> json) {
-    // Build direct admin name from firstname and lastname if available
-    String? directAdminName;
-    if (json['directAdminFirstname'] != null || json['directAdminLastname'] != null) {
-      final firstname = json['directAdminFirstname'] as String? ?? '';
-      final lastname = json['directAdminLastname'] as String? ?? '';
-      directAdminName = '$firstname $lastname'.trim();
-      if (directAdminName.isEmpty) {
-        directAdminName = json['directAdminUsername'] as String?;
-      }
-    }
-
     return Project(
       id: json['id'] as int? ?? 0,
-      projectName: json['projectName'] as String? ?? '',
+      projectName: json['projectName'] as String?,
       isActive: json['IsActive'] as bool? ?? 
                 (json['isActive'] as bool? ?? true),
-      directAdminId: json['DirectAdminId'] as int? ?? 
-                     (json['directAdminId'] as int?),
-      directAdminName: directAdminName,
-      directAdminUsername: json['directAdminUsername'] as String? ?? 
-                           (json['directAdminUsername'] as String?),
+      financeCenterCost: json['FinanceCenterCost'] as int?,
+      baseCenterCost: json['BaseCenterCost'] as String?,
+      bLine: json['BLine'] as String?,
+      systemType: json['SystemType'] as String?,
+      contractType: json['ContractType'] as String?,
+      centerType: json['CenterType'] as String?,
       users: json['Users'] != null
           ? (json['Users'] as List).map((u) => User.fromJson(u)).toList()
           : null,
@@ -147,7 +143,12 @@ class Project {
       'id': id,
       'projectName': projectName,
       'IsActive': isActive,
-      'DirectAdminId': directAdminId,
+      'FinanceCenterCost': financeCenterCost,
+      'BaseCenterCost': baseCenterCost,
+      'BLine': bLine,
+      'SystemType': systemType,
+      'ContractType': contractType,
+      'CenterType': centerType,
     };
   }
 }
