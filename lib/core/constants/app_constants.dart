@@ -2,8 +2,9 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 class AppConstants {
   // API Configuration
-  static String get baseUrl =>
-      dotenv.env['API_BASE_URL'] ?? 'http://localhost:3000';
+  // static String get baseUrl =>
+  // dotenv.env['API_BASE_URL'] ?? 'http://localhost:3000';
+  static const String baseUrl = 'http://10.10.40.235:3000';
   static const String apiVersion = '/api/v1';
 
   // Endpoints
